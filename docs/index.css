@@ -78,5 +78,16 @@ li {
     color:antiquewhite;
     padding: 10px;
 }
-
-
+/*div container for image*/
+.scrollable-container{
+    width: 1200px;
+    height: 400px;
+    overflow: auto;
+    margin: auto;
+}
+/*class for panoramic image*/
+.large-image{
+    width: auto;
+    height: auto;
+    max-width: none;
+}
