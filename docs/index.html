@@ -29,8 +29,60 @@
 <!--Script for displaying the NC county map-->
 <script src="../scripts/ncMap.js"></script>
 <body>
-    <div class="scrollable-container" style="width:100;height:100;overflow:scroll;">
-        <img src="images/ScrollTest.jpg" class="large-image" />
+    <div class="scrollable-container">
+        <img src="images/ScrollTest.jpg" />
     </div>
+    <script>
+        const container = document.querySelector('.scrollable-container');
+        let startX, startY, scrollLeft, scrollTop, isDown, currentZoom;
+
+        container.addEventListener('mousedown',e => mouseIsDown(e));
+        container.addEventListener('mouseup',mouseIsUp);
+        container.addEventListener('mousemove',e => mouseMove(e));
+        container.addEventListener('mouseleave',mouseLeave);
+        container.addEventListener('wheel',e => handleScroll(e), { passive: false })
+
+        function handleScroll(e)
+        {
+            //disables scrolling up/down with mouse wheel, only click/drag will work
+            e.preventDefault();
+            // TODO: IMPLEMENT ZOOM-IN/ZOOM-OUT WITH MOUSE SCROLL
+        }
+
+        function mouseIsDown(e)
+        {
+            e.preventDefault()
+            isDown = true;
+            startY = e.pageY - container.offsetTop;
+            startX = e.pageX - container.offsetLeft;
+            scrollLeft = container.scrollLeft;
+            scrollTop = container.scrollTop;
+        }
+
+        function mouseIsUp()
+        {
+           isDown = false;
+        }
+
+        function mouseMove(e)
+        {
+            if(isDown)
+            {
+                e.preventDefault();
+                const y = e.pageY - container.offsetTop;
+                const walkY = y - startY;
+                container.scrollTop = scrollTop - walkY;
+
+                const x = e.pageX - container.offsetLeft;
+                const walkX = x - startX;
+                container.scrollLeft = scrollLeft - walkX;
+            }
+        }
+
+        function mouseLeave()
+        {
+            isDown = false;
+        }
+    </script>
 </body>
 </html>
