@@ -111,8 +111,36 @@
         circle.style.borderRadius = '50%';
         circle.style.class = "visible";
 
-        container.appendChild(circle);
 
+        const tooltip = document.createElement('div');
+        tooltip.textContent = txt;
+        tooltip.style.position = 'absolute';
+        tooltip.style.width = '50px'
+        tooltip.style.left = `${x - 5}px`;
+        tooltip.style.top = `${y + 10}px`;
+        tooltip.style.fontSize = '12px';
+        tooltip.style.color = 'white';
+        tooltip.style.visiblity = 'hidden'
+
+        container.appendChild(circle);
+        container.appendChild(tooltip);
+
+        circle.addEventListener('mouseover', function(){
+            tooltip.style.visibility = 'visible';
+        })
+
+        circle.addEventListener('mouseout', function(){
+            tooltip.style.visibility = 'hidden';
+        })
+
+        circle.addEventListener('contextmenu', e=>removeAnno(e));
+
+        function removeAnno(e)
+        {
+            e.preventDefault();
+            container.removeChild(circle);
+            container.removeChild(tooltip);
+        } 
     }
 
     function handleScroll(e) {
