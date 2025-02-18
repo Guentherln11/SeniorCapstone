@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Archaeology Site Tours</title>
     <link rel="stylesheet" href="index.css">
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
+
 <body>
     <header>
         <h1>Archaeology Site Tours</h1>
@@ -15,99 +17,137 @@
             <li>Site 2</li>
         </ul>
     </nav>
-<section>
-    <aside>
-        <img src="images/maptemplate.jpg" width="400px">
-    </aside>
-    <article>
-        <h2>The Berry Site</h2>
-        <p>Site information here</p>
-    </article>
-</section>
-<h2>------WIP STUFF/STUFF WAITING FOR PLACEMENT------</h2>
+    <section>
+        <aside>
+            <img src="images/maptemplate.jpg" width="400px">
+        </aside>
+        <article>
+            <h2>The Berry Site</h2>
+            <p>Site information here</p>
+        </article>
+    </section>
+    <h2>------WIP STUFF/STUFF WAITING FOR PLACEMENT------</h2>
 </body>
 <!--Script for displaying the NC county map-->
-<script src="../scripts/ncMap.js"></script>
-<body>
-    <div class="scrollable-container">
-        <img src="images/ScrollTest.jpg" />
-    </div>
-    <script>
-        const container = document.querySelector('.scrollable-container');
-        let startX, startY, scrollLeft, scrollTop, isDown, currentZoom;
+<script>
+    const width = 500;
+    const height = 500;
 
-        container.addEventListener('mousedown',e => mouseIsDown(e));
-        container.addEventListener('mouseup',mouseIsUp);
-        container.addEventListener('mousemove',e => mouseMove(e));
-        container.addEventListener('mouseleave',mouseLeave);
-        container.addEventListener('wheel',e => handleScroll(e), { passive: false })
-        container.addEventListener('dblclick',e => doubleClick(e))
+    const svg = d3.select('body')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
 
-        function doubleClick(e)
-        {
-            const image = container.querySelector('img');
-            const rect = image.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
 
-            const txt = prompt("Enter Annotation: ")
+    d3.json('https://gist.githubusercontent.com/sdwfrost/d1c73f91dd9d175998ed166eb216994a/raw/e89c35f308cee7e2e5a784e1d3afc5d449e9e4bb/counties.geojson')
+        .then(geo => {
+            console.log(geo);
 
-            const circle = document.createElement('div');
-            circle.className = 'circle-marker';
-            circle.style.position = 'absolute';
-            circle.style.left = `${x - 5}px`; // Center the circle (assuming 10px width)
-            circle.style.top = `${y - 5}px`;  // Center the circle (assuming 10px height)
-            circle.style.width = '10px';
-            circle.style.height = '10px';
-            circle.style.backgroundColor = 'red';
-            circle.style.borderRadius = '50%';
-            circle.style.class = "visible";
-            
-            container.appendChild(circle);
+            const data = { ...geo, features: geo.features.filter(d => d.properties.STATEFP === "37") };
 
-        }
+            const projection = d3.geoMercator().fitSize([width, height], data);
 
-        function handleScroll(e)
-        {
-            //disables scrolling up/down with mouse wheel, only click/drag will work
+            const path = d3.geoPath(projection)
+
+            svg.selectAll('path')
+                .data(data.features)
+                .join('path')
+                .attr('d', d => path(d))
+                .attr('fill', function (d) {
+                    if (d.properties.NAME == 'Burke') {
+                        return "red"
+                    }
+                    else {
+                        return "white"
+                    }
+                })
+                .attr('stroke', 'black')
+                .on('mouseover', (event, d) => {
+                    svg.append('text')
+                        .attr('class', 'tooltip')
+                        .attr('x', d3.pointer(event)[0])
+                        .attr('y', d3.pointer(event)[1])
+                        .attr('text-anchor', 'middle')
+                        .attr('dy', -10)
+                        .text(d.properties.NAME);
+                })
+                .on('mouseout', (event, d) => {
+                    svg.selectAll('.tooltip').remove();
+                })
+        })
+</script>
+<div class="scrollable-container">
+    <img src="images/ScrollTest.jpg" />
+</div>
+<script>
+    const container = document.querySelector('.scrollable-container');
+    let startX, startY, scrollLeft, scrollTop, isDown, currentZoom;
+
+    container.addEventListener('mousedown', e => mouseIsDown(e));
+    container.addEventListener('mouseup', mouseIsUp);
+    container.addEventListener('mousemove', e => mouseMove(e));
+    container.addEventListener('mouseleave', mouseLeave);
+    container.addEventListener('wheel', e => handleScroll(e), { passive: false })
+    container.addEventListener('dblclick', e => doubleClick(e))
+
+    function doubleClick(e) {
+        const image = container.querySelector('img');
+        const rect = image.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const txt = prompt("Enter Annotation: ")
+
+        const circle = document.createElement('div');
+        circle.className = 'circle-marker';
+        circle.style.position = 'absolute';
+        circle.style.left = `${x - 5}px`; // Center the circle (assuming 10px width)
+        circle.style.top = `${y - 5}px`;  // Center the circle (assuming 10px height)
+        circle.style.width = '10px';
+        circle.style.height = '10px';
+        circle.style.backgroundColor = 'red';
+        circle.style.borderRadius = '50%';
+        circle.style.class = "visible";
+
+        container.appendChild(circle);
+
+    }
+
+    function handleScroll(e) {
+        //disables scrolling up/down with mouse wheel, only click/drag will work
+        e.preventDefault();
+        // TODO: IMPLEMENT ZOOM-IN/ZOOM-OUT WITH MOUSE SCROLL
+    }
+
+    function mouseIsDown(e) {
+        e.preventDefault()
+        isDown = true;
+        startY = e.pageY - container.offsetTop;
+        startX = e.pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
+        scrollTop = container.scrollTop;
+    }
+
+    function mouseIsUp() {
+        isDown = false;
+    }
+
+    function mouseMove(e) {
+        if (isDown) {
             e.preventDefault();
-            // TODO: IMPLEMENT ZOOM-IN/ZOOM-OUT WITH MOUSE SCROLL
-        }
+            const y = e.pageY - container.offsetTop;
+            const walkY = y - startY;
+            container.scrollTop = scrollTop - walkY;
 
-        function mouseIsDown(e)
-        {
-            e.preventDefault()
-            isDown = true;
-            startY = e.pageY - container.offsetTop;
-            startX = e.pageX - container.offsetLeft;
-            scrollLeft = container.scrollLeft;
-            scrollTop = container.scrollTop;
+            const x = e.pageX - container.offsetLeft;
+            const walkX = x - startX;
+            container.scrollLeft = scrollLeft - walkX;
         }
+    }
 
-        function mouseIsUp()
-        {
-           isDown = false;
-        }
+    function mouseLeave() {
+        isDown = false;
+    }
+</script>
 
-        function mouseMove(e)
-        {
-            if(isDown)
-            {
-                e.preventDefault();
-                const y = e.pageY - container.offsetTop;
-                const walkY = y - startY;
-                container.scrollTop = scrollTop - walkY;
-
-                const x = e.pageX - container.offsetLeft;
-                const walkX = x - startX;
-                container.scrollLeft = scrollLeft - walkX;
-            }
-        }
-
-        function mouseLeave()
-        {
-            isDown = false;
-        }
-    </script>
-</body>
 </html>
