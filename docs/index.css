@@ -87,4 +87,14 @@ li {
     scrollbar-width: none;
     border:thick double #3e5e46;
     border-width:20px;
+    position: relative;
+}
+
+.annotation{
+    position: 'absolute';
+    left: 0;
+    width: '10px';
+    height: '10px';
+    background-color: 'red';
+    border-radius: '50%';
 }

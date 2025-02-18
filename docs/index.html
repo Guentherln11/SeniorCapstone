@@ -41,6 +41,31 @@
         container.addEventListener('mousemove',e => mouseMove(e));
         container.addEventListener('mouseleave',mouseLeave);
         container.addEventListener('wheel',e => handleScroll(e), { passive: false })
+        container.addEventListener('dblclick',e => doubleClick(e))
+
+        function doubleClick(e)
+        {
+            const image = container.querySelector('img');
+            const rect = image.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const txt = prompt("Enter Annotation: ")
+
+            const circle = document.createElement('div');
+            circle.className = 'circle-marker';
+            circle.style.position = 'absolute';
+            circle.style.left = `${x - 5}px`; // Center the circle (assuming 10px width)
+            circle.style.top = `${y - 5}px`;  // Center the circle (assuming 10px height)
+            circle.style.width = '10px';
+            circle.style.height = '10px';
+            circle.style.backgroundColor = 'red';
+            circle.style.borderRadius = '50%';
+            circle.style.class = "visible";
+            
+            container.appendChild(circle);
+
+        }
 
         function handleScroll(e)
         {

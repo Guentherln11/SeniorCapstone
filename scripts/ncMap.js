@@ -21,7 +21,16 @@ const width = 500;
             .data(data.features)   
             .join('path')
             .attr('d',d=>path(d))
-            .attr('fill', 'white')
+            .attr('fill', function(d){
+                if(d.properties.NAME == 'Burke')
+                {
+                    return "red"
+                }
+                else
+                {
+                    return "white"
+                }
+            })
             .attr('stroke', 'black')
             .on('mouseover', (event, d) => {
                     svg.append('text')
@@ -34,5 +43,5 @@ const width = 500;
                 })
                 .on('mouseout', (event, d) => {
                     svg.selectAll('.tooltip').remove();
-                });
+                })
     })
