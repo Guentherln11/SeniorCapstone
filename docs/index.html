@@ -19,64 +19,86 @@
         </ul>
     </nav>
     <section>
-        <aside>
-            <!--Script for displaying the NC county map-->
-            <script>
-                const width = 450;
-                const height = 450;
-
-                const svg = d3.select('aside')
-                .append('svg')
-                .attr('width', width)
-                .attr('height', height);
-
-
-                d3.json('https://gist.githubusercontent.com/sdwfrost/d1c73f91dd9d175998ed166eb216994a/raw/e89c35f308cee7e2e5a784e1d3afc5d449e9e4bb/counties.geojson')
-                .then(geo => {
-                    console.log(geo);
-
-                    const data = { ...geo, features: geo.features.filter(d => d.properties.STATEFP === "37") };
-
-                    const projection = d3.geoMercator().fitSize([width, height], data);
-
-                    const path = d3.geoPath(projection)
-
-                svg.selectAll('path')
-                    .data(data.features)
-                    .join('path')
-                    .attr('d', d => path(d))
-                    .attr('fill', function (d) {
-                        if (d.properties.NAME == 'Burke') {
-                            return "red"
-                        }
-                        else {
-                            return "white"
-                        }
-                    })
-                    .attr('stroke-opacity', .4)
-                    .attr('stroke', 'black')
-                    .on('mouseover', (event, d) => {
-                        svg.append('text')
-                            .attr('class', 'tooltip')
-                        .attr('x', d3.pointer(event)[0])
-                        .attr('y', d3.pointer(event)[1])
-                        .attr('text-anchor', 'middle')
-                        .attr('dy', -10)
-                        .text(d.properties.NAME);
-                    })
-                    .on('mouseout', (event, d) => {
-                        svg.selectAll('.tooltip').remove();
-                    })
-                })
-        </script>
-    </aside>
     <article>
-        <h2>The Berry Site</h2>
-        <p>Site information here</p>
+        <h2 class="berryT">THE BERRY SITE</h2>
+        <div class = berryIntro>
+            <p>Located in Morganton, Burke County, the Berry Site
+            is identified as the Native American town of Joara,
+            occupied from around AD 1400 through 1600. The people
+            of the western Piedmont region of North Carolina lived
+            here for 12,000 years. The broad floodplain of the area
+            on which the Berry Site sits was also lived on for
+            thousands of years, with evidence of pottery and
+            projectile points.</p>
+            <p>It is also the site for a 16th century Spanish
+            colonial outpost. It was established in 1567 by
+            Captain Juan Pardo and his army, making it the
+             first European settlement in the interior of what
+            is now the United States. The Spanish town was
+            called Cuenca, and a fort was built known as Fort
+            San Juan. This outpost was part of an effort to
+            establish a permanent route of colonial outposts
+            along However, as the result of rising tensions
+            between the Natives of Joara and the Spanish
+            explorers, the settlement only lasted until June of
+            1568, when it was burned and destroyed.</p>
+        </div>
     </article>
+    <aside>
+        <h2 class="explore">Explore...</h2>
+        <!--Script for displaying the NC county map-->
+        <script>
+            const width = 400;
+            const height = 400;
+
+            const svg = d3.select('aside')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height);
+
+
+            d3.json('https://gist.githubusercontent.com/sdwfrost/d1c73f91dd9d175998ed166eb216994a/raw/e89c35f308cee7e2e5a784e1d3afc5d449e9e4bb/counties.geojson')
+            .then(geo => {
+                console.log(geo);
+
+                const data = { ...geo, features: geo.features.filter(d => d.properties.STATEFP === "37") };
+
+                const projection = d3.geoMercator().fitSize([width, height], data);
+
+                const path = d3.geoPath(projection)
+
+            svg.selectAll('path')
+                .data(data.features)
+                .join('path')
+                .attr('d', d => path(d))
+                .attr('fill', function (d) {
+                    if (d.properties.NAME == 'Burke') {
+                        return "red"
+                    }
+                    else {
+                        return "white"
+                    }
+                })
+                .attr('stroke-opacity', .4)
+                .attr('stroke', 'black')
+                .on('mouseover', (event, d) => {
+                    svg.append('text')
+                        .attr('class', 'tooltip')
+                    .attr('x', d3.pointer(event)[0])
+                    .attr('y', d3.pointer(event)[1])
+                    .attr('text-anchor', 'middle')
+                    .attr('dy', -10)
+                    .text(d.properties.NAME);
+                })
+                .on('mouseout', (event, d) => {
+                    svg.selectAll('.tooltip').remove();
+                })
+            })
+    </script>
+</aside>
 </section>
 <h2>------WIP STUFF/STUFF WAITING FOR PLACEMENT------</h2>
-</body>
+
 
 <div class="scrollable-container">
     <img src="images/ScrollTest.jpg" />
@@ -151,5 +173,12 @@
         isDown = false;
     }
 </script>
-
+<section>
+    <article class="artif">
+        <h2 class="berryT">ARTIFACTS</h2>
+        <p>Text here</p>
+        <img src="images/FSJ-Historic-Artifacts.jpg" height="500px" width="500px">
+    </article>
+</section>
+</body>
 </html>
