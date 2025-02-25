@@ -138,6 +138,80 @@ h3 {
     border-radius: '50%';
 }
 
+.quizOuter{
+    width: 800px;
+    height: 500px;
+    max-width: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: 30%;
+    border: thick #3e5e46;
+    border-width: 10px;
+    position: relative;
+    overflow-x: hidden;
+    background-color: #1f4028;
+    align-items: center;
+    display: flex;
+    z-index:2;
+    scrollbar-width: none;
+}
+
+.quizInner{
+    min-width: 400px;
+    height: 400px;
+    margin-top: 0;
+    margin-left: 50px;
+    margin-right: 300px;
+    position: relative;
+    background-color:#B1C29E;
+    flex-shrink: 0;
+    z-index:3;
+}
+
+.qh{
+    display: flex;
+    color:#3e5e46;
+}
+
+.qq{
+    display: flex;
+    color: white;
+}
+
+.correct{
+    border: none;
+    background-color: white;
+    text-align: center;
+    font-size: 20px;
+    color: black;
+    transition-duration: 300ms;
+}
+
+.incorrect{
+    border: none;
+    background-color: white;
+    text-align: center;
+    font-size: 20px;
+    color: black;
+    transition-duration: 300ms;
+}
+
+.counter{
+    background-color: white;
+    text-align: center;
+    color: black;
+}
+
+.blocker{
+    background-color: #1f4028;
+    color: black;
+    z-index: 1;
+    min-width: 800px;
+    height: 400px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+
 .artif {
     margin:30px;
 }

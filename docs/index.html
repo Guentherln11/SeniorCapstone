@@ -19,6 +19,65 @@
         </ul>
     </nav>
     <section>
+        <aside>
+            <!--Script for displaying the NC county map-->
+            <script>
+                const width = 450;
+                const height = 450;
+
+                const svg = d3.select('aside')
+                    .append('svg')
+                    .attr('width', width)
+                    .attr('height', height);
+
+
+                d3.json('https://gist.githubusercontent.com/sdwfrost/d1c73f91dd9d175998ed166eb216994a/raw/e89c35f308cee7e2e5a784e1d3afc5d449e9e4bb/counties.geojson')
+                    .then(geo => {
+                        console.log(geo);
+
+                        const data = { ...geo, features: geo.features.filter(d => d.properties.STATEFP === "37") };
+
+                        const projection = d3.geoMercator().fitSize([width, height], data);
+
+                        const path = d3.geoPath(projection)
+
+                        svg.selectAll('path')
+                            .data(data.features)
+                            .join('path')
+                            .attr('d', d => path(d))
+                            .attr('fill', function (d) {
+                                if (d.properties.NAME == 'Burke') {
+                                    return "red"
+                                }
+                                else {
+                                    return "white"
+                                }
+                            })
+                            .attr('stroke-opacity', .4)
+                            .attr('stroke', 'black')
+                            .on('mouseover', (event, d) => {
+                                svg.append('text')
+                                    .attr('class', 'tooltip')
+                                    .attr('x', d3.pointer(event)[0])
+                                    .attr('y', d3.pointer(event)[1])
+                                    .attr('text-anchor', 'middle')
+                                    .attr('dy', -10)
+                                    .text(d.properties.NAME);
+                            })
+                            .on('mouseout', (event, d) => {
+                                svg.selectAll('.tooltip').remove();
+                            })
+                    })
+            </script>
+        </aside>
+        <article>
+            <h2>The Berry Site</h2>
+            <p>Site information here</p>
+        </article>
+    </section>
+    <h2>------WIP STUFF/STUFF WAITING FOR PLACEMENT------</h2>
+</body>
+=======
     <article>
         <h2 class="berryT">THE BERRY SITE</h2>
         <div class = berryIntro>
@@ -44,61 +103,8 @@
             1568, when it was burned and destroyed.</p>
         </div>
     </article>
-    <aside>
-        <h2 class="explore">Explore...</h2>
-        <!--Script for displaying the NC county map-->
-        <script>
-            const width = 400;
-            const height = 400;
-
-            const svg = d3.select('aside')
-            .append('svg')
-            .attr('width', width)
-            .attr('height', height);
-
-
-            d3.json('https://gist.githubusercontent.com/sdwfrost/d1c73f91dd9d175998ed166eb216994a/raw/e89c35f308cee7e2e5a784e1d3afc5d449e9e4bb/counties.geojson')
-            .then(geo => {
-                console.log(geo);
-
-                const data = { ...geo, features: geo.features.filter(d => d.properties.STATEFP === "37") };
-
-                const projection = d3.geoMercator().fitSize([width, height], data);
-
-                const path = d3.geoPath(projection)
-
-            svg.selectAll('path')
-                .data(data.features)
-                .join('path')
-                .attr('d', d => path(d))
-                .attr('fill', function (d) {
-                    if (d.properties.NAME == 'Burke') {
-                        return "red"
-                    }
-                    else {
-                        return "white"
-                    }
-                })
-                .attr('stroke-opacity', .4)
-                .attr('stroke', 'black')
-                .on('mouseover', (event, d) => {
-                    svg.append('text')
-                        .attr('class', 'tooltip')
-                    .attr('x', d3.pointer(event)[0])
-                    .attr('y', d3.pointer(event)[1])
-                    .attr('text-anchor', 'middle')
-                    .attr('dy', -10)
-                    .text(d.properties.NAME);
-                })
-                .on('mouseout', (event, d) => {
-                    svg.selectAll('.tooltip').remove();
-                })
-            })
-    </script>
-</aside>
+    
 </section>
-<h2>------WIP STUFF/STUFF WAITING FOR PLACEMENT------</h2>
-
 
 <div class="scrollable-container">
     <img src="images/ScrollTest.jpg" />
@@ -133,8 +139,35 @@
         circle.style.borderRadius = '50%';
         circle.style.class = "visible";
 
-        container.appendChild(circle);
 
+        const tooltip = document.createElement('div');
+        tooltip.textContent = txt;
+        tooltip.style.position = 'absolute';
+        tooltip.style.width = '50px'
+        tooltip.style.left = `${x - 5}px`;
+        tooltip.style.top = `${y + 10}px`;
+        tooltip.style.fontSize = '12px';
+        tooltip.style.color = 'white';
+        tooltip.style.visiblity = 'hidden'
+
+        container.appendChild(circle);
+        container.appendChild(tooltip);
+
+        circle.addEventListener('mouseover', function () {
+            tooltip.style.visibility = 'visible';
+        })
+
+        circle.addEventListener('mouseout', function () {
+            tooltip.style.visibility = 'hidden';
+        })
+
+        circle.addEventListener('contextmenu', e => removeAnno(e));
+
+        function removeAnno(e) {
+            e.preventDefault();
+            container.removeChild(circle);
+            container.removeChild(tooltip);
+        }
     }
 
     function handleScroll(e) {
@@ -172,6 +205,96 @@
     function mouseLeave() {
         isDown = false;
     }
+</script>
+<div class='quizOuter'>
+    <div class="blocker"><h3>QUIZ</h3>
+        <button class="start">Start</button>
+    </div>
+    <div class="quizInner">
+        <h2>This is a test Question. Choose B.</h2>
+        <button class="incorrect">A. Not this one</button> <br>
+        <button class="correct">B. This one</button><br>
+        <button class="incorrect">C. Nor this one</button><br>
+        <button class="incorrect">D. No.</button><br>      
+    </div>
+    <div class="quizInner">
+        <h2>This is a test Question. Choose B.</h2>
+        <button class="incorrect">A. Not this one</button> <br>
+        <button class="correct">B. This one</button><br>
+        <button class="incorrect">C. Nor this one</button><br>
+        <button class="incorrect">D. No.</button><br>     
+    </div>
+    <div class="quizInner">
+        <h2>This is another test Question. Choose B.</h2>
+        <button class="incorrect">A. Not this one</button> <br>
+        <button class="correct">B. This one</button><br>
+        <button class="incorrect">C. Nor this one</button><br>
+        <button class="incorrect">D. No.</button><br>      
+    </div>
+    <div class="quizInner">
+        <h2>This is yet another test Question. Choose B.</h2>
+        <button class="incorrect">A. Not this one</button> <br>
+        <button class="correct">B. This one</button><br>
+        <button class="incorrect">C. Nor this one</button><br>
+        <button class="incorrect">D. No.</button><br>     
+    </div>
+    <div class="quizInner">
+        <h2>This is the last test question. Choose B.</h2>
+        <button class="incorrect">A. Not this one</button> <br>
+        <button class="correct">B. This one</button><br>
+        <button class="incorrect">C. Nor this one</button><br>
+        <button class="incorrect">D. No.</button><br> 
+    </div>
+    <div class="blocker"><h3>END OF QUIZ</h3>
+        score: <span id="updater"></span>
+    </div>
+</div>
+<script>
+    const correctContainer = document.querySelectorAll('.correct');
+    const incorrectContainer = document.querySelectorAll('.incorrect');
+    const startContainer = document.querySelector('.blocker');
+    const outerContainer=document.querySelector('.quizOuter');
+
+
+    outerContainer.scrollLeft = 0;
+    var score = 0;
+    updateText();
+
+    startContainer.addEventListener('click', startHandle)
+
+    function startHandle()
+    {
+        outerContainer.scrollLeft += 800;
+    }
+
+    function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    correctContainer.forEach(b => {
+        b.addEventListener("click", async function() {
+            b.style.backgroundColor='green';
+            score++;
+            updateText();
+            b.disabled=true;
+            await sleep(1000);
+            outerContainer.scrollLeft += 750;
+        });
+    });
+    incorrectContainer.forEach(b => {
+        b.addEventListener("click", function() {
+            b.style.backgroundColor='red';
+            score--;
+            updateText();
+            b.disabled=true;
+        });
+    });
+
+    function updateText()
+    {
+        document.getElementById("updater").innerText=score;
+    }
+
 </script>
 <section>
     <article class="artif">
