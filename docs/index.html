@@ -178,7 +178,18 @@
         isDown = false;
     }
 </script>
+
 <div class='quizOuter'>
+    <div class="counter">
+        score: <span id="updater"></span>
+    </div>
+    <div class="quizInner">
+        <h2>This is a test Question. Choose B.</h2>
+        <button class="incorrect">A. Not this one</button> <br>
+        <button class="correct">B. This one</button><br>
+        <button class="incorrect">C. Nor this one</button><br>
+        <button class="incorrect">D. No.</button><br>        
+    </div>
     <div class="quizInner">
         <h2>This is a test Question. Choose B.</h2>
         <button class="incorrect">A. Not this one</button> <br>
@@ -211,17 +222,31 @@
 <script>
     const correctContainer = document.querySelectorAll('.correct');
     const incorrectContainer = document.querySelectorAll('.incorrect');
+    
+    var score = 0;
+    updateText();
 
     correctContainer.forEach(b => {
         b.addEventListener("click", function() {
             b.style.backgroundColor='green';
+            score++;
+            updateText();
+            b.disabled=true;
         });
     });
     incorrectContainer.forEach(b => {
         b.addEventListener("click", function() {
             b.style.backgroundColor='red';
+            score--;
+            updateText();
+            b.disabled=true;
         });
     });
+
+    function updateText()
+    {
+        document.getElementById("updater").innerText=score;
+    }
 
 </script>
 
