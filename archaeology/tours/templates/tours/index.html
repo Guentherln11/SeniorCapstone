@@ -1,9 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>Archaeology Site Tours</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="{% static 'tours/css/index.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
 
@@ -107,7 +108,7 @@
 </section>
 
 <div class="scrollable-container">
-    <img src="images/ScrollTest.jpg" />
+    <img src="{% static 'tours/images/ScrollTest.jpg' %}" />
 </div>
 <script>
     const container = document.querySelector('.scrollable-container');
@@ -300,7 +301,7 @@
     <article class="artif">
         <h2 class="berryT">ARTIFACTS</h2>
         <p>Text here</p>
-        <img src="images/FSJ-Historic-Artifacts.jpg" height="500px" width="500px">
+        <img src="{% static 'images/FSJ-Historic-Artifacts.jpg' %}" height="500px" width="500px">
     </article>
 </section>
 </body>
