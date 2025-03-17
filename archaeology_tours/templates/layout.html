@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+
+<head>
+    <title>Archaeology Site Tours</title>
+    <link rel="stylesheet" href="{% static 'index.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Archaeology Site Tours</h1>
+        <h2 class="subtitle">North Carolina</h2>
+    </header>
+    <nav>
+        <ul>
+            <a href="/berry/">🍓</a>
+            <a href="/users/register/">🔒</a>
+            <a href="/users/login/">🔓</a>
+        </ul>
+    </nav>
+    <section>
+        <aside>
+            <!--Script for displaying the NC county map-->
+            {% block countyMap %}
+            
+            {% endblock %}
+        </aside>
+        <article>
+            {% block title %}
+                
+            {% endblock %}
+            <p>Site information here</p>
+        </article>
+    </section>
+    <h2>------WIP STUFF/STUFF WAITING FOR PLACEMENT------</h2>
+</body>
+=======
+    <article>
+        
+            <h2 class="berryT">
+                {% block infoTitle %}
+                
+                {% endblock %}
+            </h2>
+        
+        
+        <div class = berryIntro>
+            {% block info %}
+
+            {% endblock %}
+        </div>
+        
+    </article>
+    
+</section>
+
+<div class="scrollable-container">
+    {% block image %}
+    
+    {% endblock %}
+</div>
+<script src="{% static 'image.js' %}"></script>
+</script>
+<div class='quizOuter'>
+    <div class="blocker"><h3>QUIZ</h3>
+        <button class="start">Start</button>
+    </div>
+    {% block quizQs %}
+
+    {% endblock %}
+    <div class="blocker"><h3>END OF QUIZ</h3>
+        score: <span id="updater"></span>
+    </div>
+</div>
+<script src="{% static 'quiz.js' %}">
+</script>
+<section>
+    <article class="artif">
+        <h2 class="berryT">ARTIFACTS</h2>
+        {% block artifactInfo %}
+
+        {% endblock %}
+        {% block artifactPic %}
+        
+        {% endblock %}
+    </article>
+</section>
+</body>
+</html>

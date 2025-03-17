@@ -1,121 +1,87 @@
+{% extends 'layout.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
 
-<head>
-    <title>Archaeology Site Tours</title>
-    <link rel="stylesheet" href="{% static 'index.css' %}">
-    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-</head>
+{% block title %}
+<h2>The Berry Site</h2> 
+{% endblock %}
 
-<body>
-    <header>
-        <h1>Archaeology Site Tours</h1>
-        <h2 class="subtitle">North Carolina</h2>
-    </header>
-    <nav>
-        <ul>
-            <li>Site 1</li>
-            <li>Site 2</li>
-        </ul>
-    </nav>
-    <section>
-        <aside>
-            <!--Script for displaying the NC county map-->
-            <script src="{% static 'map.js' %}"></script>
-        </aside>
-        <article>
-            <h2>The Berry Site</h2>
-            <p>Site information here</p>
-        </article>
-    </section>
-    <h2>------WIP STUFF/STUFF WAITING FOR PLACEMENT------</h2>
-</body>
-=======
-    <article>
-        <h2 class="berryT">THE BERRY SITE</h2>
-        <div class = berryIntro>
-            <p>Located in Morganton, Burke County, the Berry Site
-            is identified as the Native American town of Joara,
-            occupied from around AD 1400 through 1600. The people
-            of the western Piedmont region of North Carolina lived
-            here for 12,000 years. The broad floodplain of the area
-            on which the Berry Site sits was also lived on for
-            thousands of years, with evidence of pottery and
-            projectile points.</p>
-            <p>It is also the site for a 16th century Spanish
-            colonial outpost. It was established in 1567 by
-            Captain Juan Pardo and his army, making it the
-             first European settlement in the interior of what
-            is now the United States. The Spanish town was
-            called Cuenca, and a fort was built known as Fort
-            San Juan. This outpost was part of an effort to
-            establish a permanent route of colonial outposts
-            along However, as the result of rising tensions
-            between the Natives of Joara and the Spanish
-            explorers, the settlement only lasted until June of
-            1568, when it was burned and destroyed.</p>
-        </div>
-    </article>
-    
-</section>
+{% block countyMap %}
+<script src="{% static 'map.js' %}"></script>
+{% endblock %}
 
-<div class="scrollable-container">
-    <img src="{% static 'images/ScrollTest.jpg' %}" />
+{% block infoTitle %}
+THE BERRY SITE
+{% endblock %}
+
+{% block info %}
+<p>Located in Morganton, Burke County, the Berry Site
+    is identified as the Native American town of Joara,
+    occupied from around AD 1400 through 1600. The people
+    of the western Piedmont region of North Carolina lived
+    here for 12,000 years. The broad floodplain of the area
+    on which the Berry Site sits was also lived on for
+    thousands of years, with evidence of pottery and
+    projectile points.</p>
+    <p>It is also the site for a 16th century Spanish
+    colonial outpost. It was established in 1567 by
+    Captain Juan Pardo and his army, making it the
+     first European settlement in the interior of what
+    is now the United States. The Spanish town was
+    called Cuenca, and a fort was built known as Fort
+    San Juan. This outpost was part of an effort to
+    establish a permanent route of colonial outposts
+    along However, as the result of rising tensions
+    between the Natives of Joara and the Spanish
+    explorers, the settlement only lasted until June of
+    1568, when it was burned and destroyed.</p>
+{% endblock %}
+
+{% block image %}
+<img src="{% static 'images/ScrollTest.jpg' %}" />
+{% endblock %}
+
+{% block quizQs %}
+<div class="quizInner">
+    <h2>This is a test Question. Choose B.</h2>
+    <button class="incorrect">A. Not this one</button> <br>
+    <button class="correct">B. This one</button><br>
+    <button class="incorrect">C. Nor this one</button><br>
+    <button class="incorrect">D. No.</button><br>      
 </div>
-<script src="{% static 'image.js' %}"></script>
-</script>
-<div class='quizOuter'>
-    <div class="blocker"><h3>QUIZ</h3>
-        <button class="start">Start</button>
-    </div>
-    <div class="quizInner">
-        <h2>This is a test Question. Choose B.</h2>
-        <button class="incorrect">A. Not this one</button> <br>
-        <button class="correct">B. This one</button><br>
-        <button class="incorrect">C. Nor this one</button><br>
-        <button class="incorrect">D. No.</button><br>      
-    </div>
-    <div class="quizInner">
-        <h2>This is a test Question. Choose B.</h2>
-        <button class="incorrect">A. Not this one</button> <br>
-        <button class="correct">B. This one</button><br>
-        <button class="incorrect">C. Nor this one</button><br>
-        <button class="incorrect">D. No.</button><br>     
-    </div>
-    <div class="quizInner">
-        <h2>This is another test Question. Choose B.</h2>
-        <button class="incorrect">A. Not this one</button> <br>
-        <button class="correct">B. This one</button><br>
-        <button class="incorrect">C. Nor this one</button><br>
-        <button class="incorrect">D. No.</button><br>      
-    </div>
-    <div class="quizInner">
-        <h2>This is yet another test Question. Choose B.</h2>
-        <button class="incorrect">A. Not this one</button> <br>
-        <button class="correct">B. This one</button><br>
-        <button class="incorrect">C. Nor this one</button><br>
-        <button class="incorrect">D. No.</button><br>     
-    </div>
-    <div class="quizInner">
-        <h2>This is the last test question. Choose B.</h2>
-        <button class="incorrect">A. Not this one</button> <br>
-        <button class="correct">B. This one</button><br>
-        <button class="incorrect">C. Nor this one</button><br>
-        <button class="incorrect">D. No.</button><br> 
-    </div>
-    <div class="blocker"><h3>END OF QUIZ</h3>
-        score: <span id="updater"></span>
-    </div>
+<div class="quizInner">
+    <h2>This is a test Question. Choose B.</h2>
+    <button class="incorrect">A. Not this one</button> <br>
+    <button class="correct">B. This one</button><br>
+    <button class="incorrect">C. Nor this one</button><br>
+    <button class="incorrect">D. No.</button><br>     
 </div>
-<script src="{% static 'quiz.js' %}">
-</script>
-<section>
-    <article class="artif">
-        <h2 class="berryT">ARTIFACTS</h2>
-        <p>Text here</p>
-        <img src="{% static 'images/FSJ-Historic-Artifacts.jpg' %}" height="500px" width="500px">
-    </article>
-</section>
-</body>
-</html>
+<div class="quizInner">
+    <h2>This is another test Question. Choose B.</h2>
+    <button class="incorrect">A. Not this one</button> <br>
+    <button class="correct">B. This one</button><br>
+    <button class="incorrect">C. Nor this one</button><br>
+    <button class="incorrect">D. No.</button><br>      
+</div>
+<div class="quizInner">
+    <h2>This is yet another test Question. Choose B.</h2>
+    <button class="incorrect">A. Not this one</button> <br>
+    <button class="correct">B. This one</button><br>
+    <button class="incorrect">C. Nor this one</button><br>
+    <button class="incorrect">D. No.</button><br>     
+</div>
+<div class="quizInner">
+    <h2>This is the last test question. Choose B.</h2>
+    <button class="incorrect">A. Not this one</button> <br>
+    <button class="correct">B. This one</button><br>
+    <button class="incorrect">C. Nor this one</button><br>
+    <button class="incorrect">D. No.</button><br> 
+</div>
+{% endblock %}
+
+{% block artifactInfo %}
+<p>Text here</p>
+{% endblock %}
+
+{% block artifactPic %}
+<img src="{% static 'images/FSJ-Historic-Artifacts.jpg' %}" height="500px" width="500px">
+{% endblock %}
