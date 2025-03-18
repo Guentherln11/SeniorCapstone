@@ -1,19 +1,12 @@
 {% extends 'layout.html' %}
 {% load static %}
 
-{% block title %}
-<h2>The Berry Site</h2> 
-{% endblock %}
-
-{% block countyMap %}
-<script src="{% static 'map.js' %}"></script>
-{% endblock %}
-
 {% block infoTitle %}
 THE BERRY SITE
 {% endblock %}
 
 {% block info %}
+<div class = berryIntro>
 <p>Located in Morganton, Burke County, the Berry Site
     is identified as the Native American town of Joara,
     occupied from around AD 1400 through 1600. The people
@@ -34,7 +27,14 @@ THE BERRY SITE
     between the Natives of Joara and the Spanish
     explorers, the settlement only lasted until June of
     1568, when it was burned and destroyed.</p>
+</div>
 {% endblock %}
+
+{% block countyMap %}
+<script src="{% static 'map.js' %}"></script>
+{% endblock %}
+
+
 
 {% block image %}
 <img src="{% static 'images/ScrollTest.jpg' %}" />

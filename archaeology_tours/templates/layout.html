@@ -21,23 +21,7 @@
         </ul>
     </nav>
     <section>
-        <aside>
-            <!--Script for displaying the NC county map-->
-            {% block countyMap %}
-            
-            {% endblock %}
-        </aside>
         <article>
-            {% block title %}
-                
-            {% endblock %}
-            <p>Site information here</p>
-        </article>
-    </section>
-    <h2>------WIP STUFF/STUFF WAITING FOR PLACEMENT------</h2>
-</body>
-=======
-    <article>
         
             <h2 class="berryT">
                 {% block infoTitle %}
@@ -46,13 +30,21 @@
             </h2>
         
         
-        <div class = berryIntro>
-            {% block info %}
+            <div class = berryIntro>
+                {% block info %}
 
+                {% endblock %}
+            </div>
+        </article>
+        <aside>
+            <!--Script for displaying the NC county map-->
+            {% block countyMap %}
+            
             {% endblock %}
-        </div>
-        
-    </article>
+        </aside>
+    </section>
+</body>
+    
     
 </section>
 
