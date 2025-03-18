@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'index.css' %}">
+    <title>Registration</title>
+</head>
+<nav>
+    <ul>
+        <a href="/berry/">🍓</a>
+        <a href="/users/register/">🔒</a>
+        <a href="/users/login/">🔓</a>
+    </ul>
+</nav>
+<title> Register a user </title>
+<body>
+    <h2> Register a new user </h2>
+    <form class="form-with-validation" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button width="50px">Submit</button>
+    </form>
+</body>
+</html>
