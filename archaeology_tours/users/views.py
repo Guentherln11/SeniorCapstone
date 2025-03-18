@@ -13,7 +13,7 @@ def register(request):
         form = UserCreationForm()
     return render(request, "users/register.html", { "form": form })
 
-def login(request):
+def login_p(request):
     if request.method=="POST":
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
