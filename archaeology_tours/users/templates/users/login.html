@@ -4,12 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'berry/index.css' %}">
-    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'index.css' %}">
+    <title>Login</title>
 </head>
+<nav>
+    <ul>
+        <a href="/berry/">🍓</a>
+        <a href="/users/register/">🔒</a>
+        <a href="/users/login/">🔓</a>
+    </ul>
+</nav>
 <title> Login </title>
 <body>
-    <h1> Login </h1>
+    <h2> Login </h2>
     <form class="form-with-validation" method="post">
         {% csrf_token %}
         {{ form }}
