@@ -235,3 +235,9 @@ h3 {
     padding: 0.25rem;
     max-width: 300px;
 }
+
+.loadAnno{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: center; 
+}
