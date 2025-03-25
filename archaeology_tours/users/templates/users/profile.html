@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'index.css' %}">
+    <title>Profile</title>
+</head>
+<nav>
+            <a href="/berry/">🍓</a>
+            <a href="/users/register/">🔒</a>
+            <a href="/users/login/">🔓</a>
+            <a href="/users/profile/">👤</a>
+            <a href="">🏠</a>
+</nav>
+<body>
+    <div>
+        <h2>This is {{user.username}}'s profile</h2>
+    </div>
+</body>
+</html>
