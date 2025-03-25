@@ -73,7 +73,6 @@ function mouseIsDown(e) {
     startX = e.pageX - container.offsetLeft;
     scrollLeft = container.scrollLeft;
     scrollTop = container.scrollTop;
-    loadAnnotations();
 }
 
 function mouseIsUp() {
