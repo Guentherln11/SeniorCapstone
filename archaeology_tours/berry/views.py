@@ -10,13 +10,13 @@ def index(request):
    return HttpResponse(template.render()) 
 
 def get_annotations(request):
-   annotations = Annotations.objects.all().values('x', 'y', 'text')
+   annotations = Annotations.objects.all().values('x', 'y', 'text', 'imageNo')
    return JsonResponse(list(annotations), safe=False)
 
 def save_annotation(request):
    if request.method == 'POST':
       data = json.loads(request.body)
-      annotation = Annotations(x=data['x'], y=data['y'], text=data['txt'])
+      annotation = Annotations(x=data['x'], y=data['y'], text=data['txt'], imageNo=data['imageNo'])
       annotation.save()
       return JsonResponse({'status': 'success'})
    return JsonResponse({'status': 'failed'}, status=400)

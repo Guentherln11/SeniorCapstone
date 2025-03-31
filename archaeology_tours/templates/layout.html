@@ -50,11 +50,14 @@
     
     
 </section>
-
+<div class="gallery">
+    <button id="prev-btn">Previous</button>
 <div class="scrollable-container">
     {% block image %}
     
     {% endblock %}
+</div>
+    <button id="next-btn">Next</button>
 </div>
 <script src="{% static 'image.js' %}"></script>
 </script>

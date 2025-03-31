@@ -1,6 +1,29 @@
 const container = document.querySelector('.scrollable-container');
 let startX, startY, scrollLeft, scrollTop, isDown, currentZoom;
 
+const nextButton = document.getElementById('next-btn');
+const prevButton = document.getElementById('prev-btn');
+const image = container.querySelector('img');
+
+let imageNum = 0;
+
+const images = [
+    'image1',
+    'image2'
+]
+
+nextButton.addEventListener('click', () => {
+    imageNum = (imageNum + 1) % images.length;
+    clearAnnotations();
+    loadAnnotations(imageNum);
+})
+
+prevButton.addEventListener('click', () => {
+    imageNum = (imageNum - 1 + images.length) % images.length;
+    clearAnnotations();
+    loadAnnotations(imageNum);
+})
+
 container.addEventListener('mousedown', e => mouseIsDown(e));
 container.addEventListener('mouseup', mouseIsUp);
 container.addEventListener('mousemove', e => mouseMove(e));
@@ -9,7 +32,6 @@ container.addEventListener('wheel', e => handleScroll(e), { passive: false })
 container.addEventListener('dblclick', e => doubleClick(e))
 
 function doubleClick(e) {
-    const image = container.querySelector('img');
     const rect = image.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -57,7 +79,7 @@ function doubleClick(e) {
         container.removeChild(tooltip);
     }
 
-    saveAnnotation(x, y, txt);
+    saveAnnotation(x, y, txt, imageNum);
 }
 
 function handleScroll(e) {
@@ -96,25 +118,25 @@ function mouseLeave() {
     isDown = false;
 }
 
-function saveAnnotation(x, y, txt){
+function saveAnnotation(x, y, txt, imageNum) {
     fetch('/berry/save_annotation/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRFToken': getCookie('csrftoken')
         },
-        body: JSON.stringify({ x, y, txt })
+        body: JSON.stringify({ x, y, txt, imageNo: imageNum })
     }).then(response => response.json())
-      .then(data => console.log(data));
+        .then(data => console.log(data));
 }
 
 function getCookie(name) {
     let cookieV = null;
-    if(document.cookie && document.cookie !== ''){
+    if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
-        for(let i = 0; i < cookies.length; i++){
+        for (let i = 0; i < cookies.length; i++) {
             const cookie = cookies[i].trim();
-            if(cookie.substring(0, name.length + 1) === (name + '=')){
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
                 cookieV = decodeURIComponent(cookie.substring(name.length + 1));
                 break;
             }
@@ -123,56 +145,73 @@ function getCookie(name) {
     return cookieV
 }
 
-function loadAnnotations(){
-    fetch('/berry/annotations/')
-    .then(response =>response.json())
-    .then(data=>{
-    data.forEach(annotation => {
-        const circle = document.createElement('div');
-        circle.className = 'circle-marker';
-        circle.style.position = 'absolute';
-        circle.style.left = `${annotation.x - 5}px`; // Center the circle (assuming 10px width)
-        circle.style.top = `${annotation.y - 5}px`;  // Center the circle (assuming 10px height)
-        circle.style.width = '10px';
-        circle.style.height = '10px';
-        circle.style.backgroundColor = 'red';
-        circle.style.borderRadius = '50%';
-        circle.style.class = "visible";
-    
-    
-        const tooltip = document.createElement('div');
-        tooltip.textContent = annotation.text;
-        tooltip.style.position = 'absolute';
-        tooltip.style.width = '50px'
-        tooltip.style.left = `${annotation.x - 5}px`;
-        tooltip.style.top = `${annotation.y + 10}px`;
-        tooltip.style.fontSize = '12px';
-        tooltip.style.color = 'white';
-        tooltip.style.visiblity = 'hidden'
-    
-        container.appendChild(circle);
-        container.appendChild(tooltip);
-    
-        circle.addEventListener('mouseover', function () {
-            tooltip.style.visibility = 'visible';
-        })
-    
-        circle.addEventListener('mouseout', function () {
-            tooltip.style.visibility = 'hidden';
-        })
-    
-        circle.addEventListener('contextmenu', e => removeAnno(e));
-    
-        function removeAnno(e) {
-            e.preventDefault();
-            container.removeChild(circle);
-            container.removeChild(tooltip);
-        }
-        console.log(annotation.x);
-    }
+function loadAnnotations(imageNumber) {
+    console.log("ENTERING LOAD ANNO");
 
-    )
-})
+    fetch('/berry/annotations/')
+        .then(response => response.json())
+        .then(data => {
+            console.log("API Response:", data)
+            data.forEach(annotation => {
+                console.log("ANNOTATION.IMAGENO: " + annotation.imageNo);
+                console.log("IMAGENUMBER: " + imageNumber);
+                
+                if (annotation.imageNo === imageNumber) {
+                    const circle = document.createElement('div');
+                    circle.className = 'circle-marker';
+                    circle.style.position = 'absolute';
+                    circle.style.left = `${annotation.x - 5}px`; // Center the circle (assuming 10px width)
+                    circle.style.top = `${annotation.y - 5}px`;  // Center the circle (assuming 10px height)
+                    circle.style.width = '10px';
+                    circle.style.height = '10px';
+                    circle.style.backgroundColor = 'red';
+                    circle.style.borderRadius = '50%';
+                    circle.style.class = "visible";
+
+
+                    const tooltip = document.createElement('div');
+                    tooltip.textContent = annotation.text;
+                    tooltip.style.position = 'absolute';
+                    tooltip.style.width = '50px'
+                    tooltip.style.left = `${annotation.x - 5}px`;
+                    tooltip.style.top = `${annotation.y + 10}px`;
+                    tooltip.style.fontSize = '12px';
+                    tooltip.style.color = 'white';
+                    tooltip.style.visiblity = 'hidden'
+
+                    container.appendChild(circle);
+                    container.appendChild(tooltip);
+
+                    circle.addEventListener('mouseover', function () {
+                        tooltip.style.visibility = 'visible';
+                    })
+
+                    circle.addEventListener('mouseout', function () {
+                        tooltip.style.visibility = 'hidden';
+                    })
+
+                    circle.addEventListener('contextmenu', e => removeAnno(e));
+
+                    function removeAnno(e) {
+                        e.preventDefault();
+                        container.removeChild(circle);
+                        container.removeChild(tooltip);
+                    }
+                }
+            }
+            )
+        })
 }
 
-document.addEventListener('DOMContentLoaded', loadAnnotations);
+function clearAnnotations(){
+    const circles = container.querySelectorAll('.circle-marker');
+    const tooltips = container.querySelectorAll('div[style*="color: white"]');
+    circles.forEach(circle => {
+        container.removeChild(circle);
+    })
+    tooltips.forEach(tooltip => {
+        container.removeChild(tooltip);
+    })
+}
+
+document.addEventListener('DOMContentLoaded', loadAnnotations(imageNum));
