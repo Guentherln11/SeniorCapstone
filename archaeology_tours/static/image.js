@@ -11,8 +11,11 @@ container.addEventListener('dblclick', e => doubleClick(e))
 function doubleClick(e) {
     const image = container.querySelector('img');
     const rect = image.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    // this is adding scaling for the annotations' positions
+    const scaleX = image.naturalWidth / rect.width;
+    const scaleY = image.naturalHeight / rect.height;
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
 
     const txt = prompt("Enter Annotation: ")
 
@@ -61,9 +64,32 @@ function doubleClick(e) {
 }
 
 function handleScroll(e) {
-    //disables scrolling up/down with mouse wheel, only click/drag will work
-    e.preventDefault();
-    // TODO: IMPLEMENT ZOOM-IN/ZOOM-OUT WITH MOUSE SCROLL
+    let image = document.getElementById("scrollImg");
+    let scale = 1;
+    const scaleStep = 1;
+    const minScale = 1;
+    const maxScale = 10;
+    
+    if (e.target == image) { // disables scrolling rest of page while cursor on image
+        e.preventDefault(); //disables scrolling up/down with mouse wheel, only click/drag will work
+
+        const rect = image.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left;
+        const offsetY = e.clientY - rect.top;
+
+        const originX = (offsetX / rect.width) * 100;
+        const originY = (offsetY / rect.height) * 100;
+
+        if (e.deltaY < 0) {
+            scale = Math.min(maxScale, scale + scaleStep);
+        } else {
+            scale = Math.max(minScale, scale - scaleStep);
+        }
+    
+        image.style.transformOrigin = `${originX}% ${originY}%`;
+        image.style.transform = `scale(${scale})`;
+    }
+
 }
 
 function mouseIsDown(e) {

@@ -129,6 +129,10 @@ h3 {
     position: relative;
 }
 
+#scrollImg {
+    transition: transform 0.2s ease-in-out;
+}
+
 .annotation{
     position: 'absolute';
     left: 0;

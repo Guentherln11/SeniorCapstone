@@ -35,9 +35,14 @@ THE BERRY SITE
 {% endblock %}
 
 
+<div class="scrollable-container">
+    {% block image %}
+    <img src="{% static 'images/ScrollTest.jpg' %}" id="scrollImg" />
+    {% endblock %}
+</div>
 
-{% block image %}
-<img src="{% static 'images/ScrollTest.jpg' %}" />
+{% block imageJs%}
+<script src="{% static 'image.js' %}"></script>
 {% endblock %}
 
 {% block quizQs %}
