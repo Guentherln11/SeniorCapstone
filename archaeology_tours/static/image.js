@@ -8,20 +8,22 @@ const image = container.querySelector('img');
 let imageNum = 0;
 
 const images = [
-    'image1',
-    'image2'
+    '/media/images/ScrollTest.jpg',
+    '/media/images/20250325_101839.jpg',
 ]
 
 nextButton.addEventListener('click', () => {
     imageNum = (imageNum + 1) % images.length;
     clearAnnotations();
     loadAnnotations(imageNum);
+    image.src= images[imageNum];
 })
 
 prevButton.addEventListener('click', () => {
     imageNum = (imageNum - 1 + images.length) % images.length;
     clearAnnotations();
     loadAnnotations(imageNum);
+    image.src = images[imageNum];
 })
 
 container.addEventListener('mousedown', e => mouseIsDown(e));
