@@ -130,6 +130,10 @@ h3 {
     flex: 1;
 }
 
+#scrollImg {
+    transition: transform 0.2s ease-in-out;
+}
+
 .annotation{
     position: 'absolute';
     left: 0;
