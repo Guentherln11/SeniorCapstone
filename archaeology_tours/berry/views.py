@@ -1,13 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
-from .models import Annotations
+from .models import Annotations, Additional
 from django.template import loader
 import json
 
 # Create your views here.
 def index(request):
    template = loader.get_template('index.html')
-   return HttpResponse(template.render()) 
+   pages = Additional.objects.all()
+   context = {"pages": pages}
+   return HttpResponse(template.render(context, request)) 
 
 def get_annotations(request):
    annotations = Annotations.objects.all().values('x', 'y', 'text', 'imageNo')
@@ -20,3 +22,8 @@ def save_annotation(request):
       annotation.save()
       return JsonResponse({'status': 'success'})
    return JsonResponse({'status': 'failed'}, status=400)
+
+def get_page(request, slug):
+    page = get_object_or_404(Additional, slug=slug)
+    pages = Additional.objects.all()
+    return render(request, "additionalPage.html", {'page': page, 'pages': pages})

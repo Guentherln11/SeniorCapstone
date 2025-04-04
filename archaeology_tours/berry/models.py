@@ -10,3 +10,11 @@ class Annotations(models.Model):
 class bImages(models.Model):
     name = models.CharField(max_length=255)
     image = models.ImageField(upload_to='images/')
+
+class Additional(models.Model):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+

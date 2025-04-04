@@ -15,12 +15,14 @@
     </header>
     <nav>
         <ul>
-            <a href="/berry/">🍓</a>
-            <a href="/users/register/">🔒</a>
-            <a href="/users/login/">🔓</a>
-            <a href="/users/profile/">👤</a>
-            <a href="">🏠</a>
-
+            <li><a href="/berry/">Berry Site</a></li>
+            <li><a href="">Home</a></li>
+            {% for page in pages %}
+            <li><a href="{% url 'berry:get_page' slug=page.slug %}">{{ page.title }}</a></li>
+            {% endfor %}
+            <li><a href="/users/register/">Register</a></li>
+            <li><a href="/users/login/">Login</a></li>
+            <li><a href="/users/profile/">Profile</a></li>
         </ul>
     </nav>
     <section>

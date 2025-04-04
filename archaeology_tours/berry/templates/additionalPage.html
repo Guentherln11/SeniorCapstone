@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+{% block infoTitle %}
+    {{ page.title }}
+{% endblock %}
+{% block info %}
+    <div class="berryIntro">
+        {{ page.content|safe }}
+    </div>
+{% endblock %}
