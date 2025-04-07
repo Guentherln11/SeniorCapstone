@@ -11,6 +11,7 @@ def index(request):
    context = {"pages": pages}
    return HttpResponse(template.render(context, request)) 
 
+
 def get_annotations(request):
    annotations = Annotations.objects.all().values('x', 'y', 'text', 'imageNo')
    return JsonResponse(list(annotations), safe=False)
@@ -26,4 +27,5 @@ def save_annotation(request):
 def get_page(request, slug):
     page = get_object_or_404(Additional, slug=slug)
     pages = Additional.objects.all()
-    return render(request, "additionalPage.html", {'page': page, 'pages': pages})
+    county = page.county if page.county else "Burke"
+    return render(request, "additionalPage.html", {'page': page, 'pages': pages, "county": county})

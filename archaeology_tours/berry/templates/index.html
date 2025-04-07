@@ -31,6 +31,9 @@ THE BERRY SITE
 {% endblock %}
 
 {% block countyMap %}
+<script>
+    const county = "{{ page.county|default:'Burke'|escapejs}}"
+</script>
 <script src="{% static 'map.js' %}"></script>
 {% endblock %}
 

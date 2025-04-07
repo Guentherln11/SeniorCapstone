@@ -15,8 +15,8 @@
     </header>
     <nav>
         <ul>
+            <li><a href="/">Home</a></li>
             <li><a href="/berry/">Berry Site</a></li>
-            <li><a href="">Home</a></li>
             {% for page in pages %}
             <li><a href="{% url 'berry:get_page' slug=page.slug %}">{{ page.title }}</a></li>
             {% endfor %}
@@ -42,9 +42,8 @@
             </div>
         </article>
         <aside>
-            <!--Script for displaying the NC county map-->
             {% block countyMap %}
-            
+                
             {% endblock %}
         </aside>
     </section>

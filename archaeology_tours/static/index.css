@@ -80,6 +80,13 @@ p {
     text-align: justify;
 }
 
+p.about {
+    width: 50%;
+    margin: 0 auto;
+    padding: 50px;
+    background-color: #B1C29E;
+}
+
 
 aside {
     font-family: articleFont;

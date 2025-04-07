@@ -16,5 +16,6 @@ class Additional(models.Model):
     slug = models.SlugField(unique=True)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    county = models.CharField(max_length = 255, blank=True)
     
 
