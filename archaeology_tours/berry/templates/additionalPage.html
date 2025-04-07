@@ -13,7 +13,7 @@
 {% block countyMap %}
 <script>
     window.county = "{{ page.county|default:'Burke'|escapejs}}"
-    console.log("County:", county);
+    //console.log("County:", county);
 </script>
 <script src="{% static 'map.js' %}"></script>
 <!-- <p>County: {{ page.county }}</p> -->
