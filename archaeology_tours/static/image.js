@@ -1,9 +1,18 @@
 const container = document.querySelector('.scrollable-container');
-let startX, startY, scrollLeft, scrollTop, isDown, currentZoom;
+const image = container.querySelector('img');
+const zoomDiv = document.createElement('div');
+zoomDiv.className = "zoom-div";
+zoomDiv.style.position = 'relative';
+zoomDiv.style.display = 'inline-block';
+zoomDiv.style.transformOrigin = '0 0';
+
+container.replaceChild(zoomDiv, image);
+zoomDiv.appendChild(image);
+let startX, startY, scrollLeft, scrollTop, isDown;
+let currentZoom = 1;
 
 const nextButton = document.getElementById('next-btn');
 const prevButton = document.getElementById('prev-btn');
-const image = container.querySelector('img');
 
 let imageNum = 0;
 
@@ -16,7 +25,7 @@ nextButton.addEventListener('click', () => {
     imageNum = (imageNum + 1) % images.length;
     clearAnnotations();
     loadAnnotations(imageNum);
-    image.src= images[imageNum];
+    image.src = images[imageNum];
 })
 
 prevButton.addEventListener('click', () => {
@@ -34,18 +43,26 @@ container.addEventListener('wheel', e => handleScroll(e), { passive: false })
 container.addEventListener('dblclick', e => doubleClick(e))
 
 function doubleClick(e) {
+    let scale = 1;
+    const scaleStep = 1;
+    const minScale = 1;
+    const maxScale = 10;
     const rect = image.getBoundingClientRect();
-    const scaleX = image.naturalWidth / rect.width;
-     const scaleY = image.naturalHeight / rect.height;
-     const x = (e.clientX - rect.left) * scaleX;
-     const y = (e.clientY - rect.top) * scaleY;
+    if (e.deltaY < 0) {
+        scale = Math.min(maxScale, scale + scaleStep);
+    } else {
+        scale = Math.max(minScale, scale - scaleStep);
+    }
+
+    const x = (e.clientX - rect.left) / currentZoom;
+    const y = (e.clientY - rect.top) / currentZoom;
 
     const txt = prompt("Enter Annotation: ")
 
     const circle = document.createElement('div');
     circle.className = 'circle-marker';
     circle.style.position = 'absolute';
-    circle.style.left = `${x - 5}px`; // Center the circle (assuming 10px width)
+    circle.style.left = `${(x - 5)}px`; // Center the circle (assuming 10px width)
     circle.style.top = `${y - 5}px`;  // Center the circle (assuming 10px height)
     circle.style.width = '10px';
     circle.style.height = '10px';
@@ -53,6 +70,8 @@ function doubleClick(e) {
     circle.style.borderRadius = '50%';
     circle.style.class = "visible";
 
+    circle.setAttribute('data-x', x);
+    circle.setAttribute('data-y', y);
 
     const tooltip = document.createElement('div');
     tooltip.textContent = txt;
@@ -62,10 +81,11 @@ function doubleClick(e) {
     tooltip.style.top = `${y + 10}px`;
     tooltip.style.fontSize = '12px';
     tooltip.style.color = 'white';
-    tooltip.style.visiblity = 'hidden'
+    tooltip.style.visibility = 'hidden'
 
-    container.appendChild(circle);
-    container.appendChild(tooltip);
+
+    zoomDiv.appendChild(circle);
+    zoomDiv.appendChild(tooltip);
 
     circle.addEventListener('mouseover', function () {
         tooltip.style.visibility = 'visible';
@@ -87,32 +107,39 @@ function doubleClick(e) {
 }
 
 function handleScroll(e) {
-    //disables scrolling up/down with mouse wheel, only click/drag will work
-    let image = document.getElementById("scrollImg");
-     let scale = 1;
-     const scaleStep = 1;
-     const minScale = 1;
-     const maxScale = 10;
-     
-     if (e.target == image) { // disables scrolling rest of page while cursor on image
-         e.preventDefault(); //disables scrolling up/down with mouse wheel, only click/drag will work
- 
-         const rect = image.getBoundingClientRect();
-         const offsetX = e.clientX - rect.left;
-         const offsetY = e.clientY - rect.top;
- 
-         const originX = (offsetX / rect.width) * 100;
-         const originY = (offsetY / rect.height) * 100;
- 
-         if (e.deltaY < 0) {
-             scale = Math.min(maxScale, scale + scaleStep);
-         } else {
-             scale = Math.max(minScale, scale - scaleStep);
-         }
-     
-         image.style.transformOrigin = `${originX}% ${originY}%`;
-         image.style.transform = `scale(${scale})`;
-     }
+    if (e.target == image) { 
+        e.preventDefault(); 
+        let image = document.getElementById("scrollImg");
+        
+        const scaleStep = 1;
+        const minScale = 1;
+        const maxScale = 10;
+
+        //size of image relative to box
+        // with coordinates for mouse cursor
+        // offsets calc mouse position relative to img
+        const rect = image.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left;
+        const offsetY = e.clientY - rect.top;
+        
+        // where zoom will occur
+        // ratio of x/y position of mouse to image width/height
+        const originX = (offsetX / rect.width) * 100;
+        const originY = (offsetY / rect.height) * 100;
+
+        // scrolling up
+        if (e.deltaY < 0) {
+            currentZoom = Math.min(maxScale, currentZoom + scaleStep);
+        } else {
+            currentZoom = Math.max(minScale, currentZoom - scaleStep);
+        }
+
+        zoomDiv.style.transform = `scale(${currentZoom})`;
+
+        zoomDiv.style.transformOrigin = `${originX}% ${originY}%`;
+        zoomDiv.style.transform = `scale(${scale})`;
+
+    }
 }
 
 function mouseIsDown(e) {
@@ -182,7 +209,7 @@ function loadAnnotations(imageNumber) {
             data.forEach(annotation => {
                 console.log("ANNOTATION.IMAGENO: " + annotation.imageNo);
                 console.log("IMAGENUMBER: " + imageNumber);
-                
+
                 if (annotation.imageNo === imageNumber) {
                     const circle = document.createElement('div');
                     circle.className = 'circle-marker';
@@ -204,10 +231,10 @@ function loadAnnotations(imageNumber) {
                     tooltip.style.top = `${annotation.y + 10}px`;
                     tooltip.style.fontSize = '12px';
                     tooltip.style.color = 'white';
-                    tooltip.style.visiblity = 'hidden'
+                    tooltip.style.visibility = 'hidden'
 
-                    container.appendChild(circle);
-                    container.appendChild(tooltip);
+                    zoomDiv.appendChild(circle);
+                    zoomDiv.appendChild(tooltip);
 
                     circle.addEventListener('mouseover', function () {
                         tooltip.style.visibility = 'visible';
@@ -230,9 +257,7 @@ function loadAnnotations(imageNumber) {
         })
 }
 
-function clearAnnotations(){
-    const circles = container.querySelectorAll('.circle-marker');
-    const tooltips = container.querySelectorAll('div[style*="color: white"]');
+function clearAnnotations() {
     circles.forEach(circle => {
         container.removeChild(circle);
     })

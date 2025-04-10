@@ -27,15 +27,15 @@
     </nav>
     <section>
         <article>
-        
+
             <h2 class="berryT">
                 {% block infoTitle %}
-                
+
                 {% endblock %}
             </h2>
-        
-        
-            <div class = berryIntro>
+
+
+            <div class=berryIntro>
                 {% block info %}
 
                 {% endblock %}
@@ -43,31 +43,40 @@
         </article>
         <aside>
             {% block countyMap %}
-                
+
             {% endblock %}
         </aside>
     </section>
 </body>
-    
+
 <div class="gallery">
     <button id="prev-btn">Previous</button>
-<div class="scrollable-container">
-    {% block image %}
-    
-    {% endblock %}
-</div>
+    <div class="scrollable-container">
+        {% block image %}
+
+        {% endblock %}
+
+        {% block infoButton %}
+            <button class="infoBtn" x="100" y="150">i</button>
+            <div class="tooltip2">Info text here!!</div>
+        {% endblock %}
+
+    </div>
     <button id="next-btn">Next</button>
 </div>
+
 <script src="{% static 'image.js' %}"></script>
-</script>
+
 <div class='quizOuter'>
-    <div class="blocker"><h3>QUIZ</h3>
+    <div class="blocker">
+        <h3>QUIZ</h3>
         <button class="start">Start</button>
     </div>
     {% block quizQs %}
 
     {% endblock %}
-    <div class="blocker"><h3>END OF QUIZ</h3>
+    <div class="blocker">
+        <h3>END OF QUIZ</h3>
         score: <span id="updater"></span>
     </div>
 </div>
@@ -80,9 +89,10 @@
 
         {% endblock %}
         {% block artifactPic %}
-        
+
         {% endblock %}
     </article>
 </section>
 </body>
+
 </html>

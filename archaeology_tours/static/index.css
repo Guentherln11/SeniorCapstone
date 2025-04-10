@@ -165,6 +165,37 @@ h3 {
     transition: transform 0.2s ease-in-out;
 }
 
+.zoomDiv {
+    transition: transform 0.2s ease;
+}
+.infoBtn {
+    position: absolute;
+    background-color: red;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    border: none;
+    padding: 0;                /* Remove default button padding */
+    margin: 0;                 /* Just in case */
+    font-size: 0;              /* Hides any text that might mess up shape */
+    line-height: 0;            /* Prevents vertical stretching */
+    cursor: pointer;
+    z-index: 100;  
+}
+
+.infoBtn:hover {
+    background-color: darkred;
+}
+
+.tooltip {
+    position: absolute;
+    width: 50px;
+    left: 373px;
+    top: 314.85px;
+    font-size: 12px;
+    color: white;
+}
+
 .annotation{
     position: 'absolute';
     left: 0;
