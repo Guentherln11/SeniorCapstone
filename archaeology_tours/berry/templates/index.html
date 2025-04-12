@@ -35,10 +35,12 @@ THE BERRY SITE
 {% endblock %}
 
 
+<div class="scrollable-container">
+    {% block image %}
+    <img src="/media/images/ScrollTest.jpg" id = "scrollImg"/>
+    {% endblock %}
+</div>
 
-{% block image %}
-<img src="{% static 'images/ScrollTest.jpg' %}" />
-{% endblock %}
 
 {% block quizQs %}
 <div class="quizInner">
@@ -83,5 +85,5 @@ THE BERRY SITE
 {% endblock %}
 
 {% block artifactPic %}
-<img src="{% static 'images/FSJ-Historic-Artifacts.jpg' %}" height="500px" width="500px">
+<img src="/media/images/FSJ-Historic-Artifacts.jpg"  height="500px" width="500px">
 {% endblock %}

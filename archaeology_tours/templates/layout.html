@@ -18,6 +18,10 @@
             <a href="/berry/">🍓</a>
             <a href="/users/register/">🔒</a>
             <a href="/users/login/">🔓</a>
+            <a href="/users/profile/">👤</a>
+            <a href="">🏠</a>
+            <a href = "/videos/">📺</a>
+
         </ul>
     </nav>
     <section>
@@ -45,13 +49,14 @@
     </section>
 </body>
     
-    
-</section>
-
+<div class="gallery">
+    <button id="prev-btn">Previous</button>
 <div class="scrollable-container">
     {% block image %}
     
     {% endblock %}
+</div>
+    <button id="next-btn">Next</button>
 </div>
 <script src="{% static 'image.js' %}"></script>
 </script>

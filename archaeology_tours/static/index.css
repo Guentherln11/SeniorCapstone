@@ -127,6 +127,11 @@ h3 {
     border:thick double #3e5e46;
     border-width:20px;
     position: relative;
+    flex: 1;
+}
+
+#scrollImg {
+    transition: transform 0.2s ease-in-out;
 }
 
 .annotation{
@@ -234,4 +239,24 @@ h3 {
 .form-with-validation input{
     padding: 0.25rem;
     max-width: 300px;
+}
+
+.loadAnno{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: center; 
+}
+
+.gallery{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.next-btn{
+    background-color: red;
+}
+
+.prev-btn{
+    background-color: red;
 }
