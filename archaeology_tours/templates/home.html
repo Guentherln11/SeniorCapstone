@@ -8,18 +8,25 @@
     <title>Home</title>
 </head>
 <body>
-    <nav>
-        <a href="/berry/">🍓</a>
-        <a href="/users/register/">🔒</a>
-        <a href="/users/login/">🔓</a>
-    </nav>
     <header>
         <h1>Home</h1>
     </header>
-    <header>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/berry/">Berry Site</a></li>
+            <li><a href="/users/register/">Register</a></li>
+            <li><a href="/users/login/">Login</a></li>
+            <li><a href="/users/profile/">Profile</a></li>
+            <li><a href="">Home</a></li>
+            {% for page in pages %}
+            <li><a href="{% url 'berry:get_page' slug=page.slug %}">{{ page.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
         <h2>About This Page</h2>
-    </header>
-    <p>
+
+    <p class="about">
         This page is dedicated to providing users with the experience of 
         an archaeological tour from the comfort of their own home. The primary
         focus is colloquially known as the "Berry Site", which you can learn

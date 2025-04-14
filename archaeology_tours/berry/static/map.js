@@ -17,12 +17,14 @@ d3.json('https://gist.githubusercontent.com/sdwfrost/d1c73f91dd9d175998ed166eb21
 
         const path = d3.geoPath(projection)
 
+        const county = window.county || 'Burke';
+
         svg.selectAll('path')
             .data(data.features)
             .join('path')
             .attr('d', d => path(d))
             .attr('fill', function (d) {
-                if (d.properties.NAME == 'Burke') {
+                if (d.properties.NAME ==  county) {
                     return "red"
                 }
                 else {

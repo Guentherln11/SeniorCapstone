@@ -26,11 +26,12 @@ header {
     border-bottom: 3px solid #1f4028;
     font-size: large;
     margin-bottom: -20px;
+    padding-bottom: 20px;
 }
 
 h1 {
     font-family: headerFont;
-    color:beige;
+    color:antiquewhite;
     margin-left: 500px;
     margin-right: 500px;
     border-bottom: 2px solid;
@@ -79,6 +80,13 @@ p {
     text-align: justify;
 }
 
+p.about {
+    width: 50%;
+    margin: 0 auto;
+    padding: 50px;
+    background-color: #B1C29E;
+}
+
 
 aside {
     font-family: articleFont;
@@ -93,19 +101,42 @@ aside {
 }
 
 nav {
+    font-family: Arial, Helvetica, sans-serif; 
     padding: 1px;
     background-color: #1f4028;
 }
 
+nav ul {
+    list-style: none;
+    margin: 10px;
+    padding: 5px;
+}
+
+nav li {
+    display: inline;
+    padding: 20px;
+}
+
+nav a {
+    color: antiquewhite;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: white;
+    text-decoration: none; 
+}
+
 li {
     display:inline;
-    color:antiquewhite;
     padding: 10px;
 }
 
 h3 {
     text-align: center;
 }
+
+
 
 .berryIntro {
     margin: 30px 50px 30px 50px;
@@ -127,6 +158,42 @@ h3 {
     border:thick double #3e5e46;
     border-width:20px;
     position: relative;
+    flex: 1;
+}
+
+#scrollImg {
+    transition: transform 0.2s ease-in-out;
+}
+
+.zoomDiv {
+    transition: transform 0.2s ease;
+}
+.infoBtn {
+    position: absolute;
+    background-color: red;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    border: none;
+    padding: 0;                /* Remove default button padding */
+    margin: 0;                 /* Just in case */
+    font-size: 0;              /* Hides any text that might mess up shape */
+    line-height: 0;            /* Prevents vertical stretching */
+    cursor: pointer;
+    z-index: 100;  
+}
+
+.infoBtn:hover {
+    background-color: darkred;
+}
+
+.tooltip {
+    position: absolute;
+    width: 50px;
+    left: 373px;
+    top: 314.85px;
+    font-size: 12px;
+    color: white;
 }
 
 .annotation{
@@ -234,4 +301,24 @@ h3 {
 .form-with-validation input{
     padding: 0.25rem;
     max-width: 300px;
+}
+
+.loadAnno{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: center; 
+}
+
+.gallery{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.next-btn{
+    background-color: red;
+}
+
+.prev-btn{
+    background-color: red;
 }

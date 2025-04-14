@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block infoTitle %}
+    {{ page.title }}
+{% endblock %}
+{% block info %}
+    <div class="berryIntro">
+        {{ page.content|safe }}
+    </div>
+{% endblock %}
+
+{% block countyMap %}
+<script>
+    window.county = "{{ page.county|default:'Burke'|escapejs}}"
+    //console.log("County:", county);
+</script>
+<script src="{% static 'map.js' %}"></script>
+<!-- <p>County: {{ page.county }}</p> -->
+{% endblock %}
