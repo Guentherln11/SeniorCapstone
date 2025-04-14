@@ -50,13 +50,13 @@
 </body>
     
 <div class="gallery">
-    <button id="prev-btn">Previous</button>
-<div class="scrollable-container">
+    <button class="prev-btn">Prev</button>
+    <div class="scrollable-image">
     {% block image %}
     
     {% endblock %}
-</div>
-    <button id="next-btn">Next</button>
+    </div>
+    <button class="next-btn">Next</button>
 </div>
 <script src="{% static 'image.js' %}"></script>
 </script>

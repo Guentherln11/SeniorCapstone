@@ -2,12 +2,26 @@
 {% load static %}
 
 {% block infoTitle %}
-    {{ page.title }}
+{{ page.title }}
 {% endblock %}
 {% block info %}
-    <div class="berryIntro">
-        {{ page.content|safe }}
-    </div>
+<div class="berryIntro">
+    {{ page.content|safe }}
+</div>
+{% endblock %}
+
+{% block image %}
+{{ imageUrls|json_script:"image-urls" }}
+
+<div class="scrollable-container">
+    <img src="{{ imageUrls.0 }}">
+</div>
+
+<script>
+    const images = JSON.parse(document.getElementById('image-urls').textContent);
+    const siteName = "{{ page.title|escapejs }}"
+</script>
+
 {% endblock %}
 
 {% block countyMap %}

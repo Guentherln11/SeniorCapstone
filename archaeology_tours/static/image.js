@@ -1,22 +1,19 @@
 const container = document.querySelector('.scrollable-container');
 let startX, startY, scrollLeft, scrollTop, isDown, currentZoom;
 
-const nextButton = document.getElementById('next-btn');
-const prevButton = document.getElementById('prev-btn');
+const nextButton = document.querySelector('.next-btn');
+const prevButton = document.querySelector('.prev-btn');
+
 const image = container.querySelector('img');
 
-let imageNum = 0;
 
-const images = [
-    '/media/images/ScrollTest.jpg',
-    '/media/images/20250325_101839.jpg',
-]
+let imageNum = 0;
 
 nextButton.addEventListener('click', () => {
     imageNum = (imageNum + 1) % images.length;
     clearAnnotations();
     loadAnnotations(imageNum);
-    image.src= images[imageNum];
+    image.src = images[imageNum];
 })
 
 prevButton.addEventListener('click', () => {
@@ -26,19 +23,19 @@ prevButton.addEventListener('click', () => {
     image.src = images[imageNum];
 })
 
-container.addEventListener('mousedown', e => mouseIsDown(e));
-container.addEventListener('mouseup', mouseIsUp);
-container.addEventListener('mousemove', e => mouseMove(e));
-container.addEventListener('mouseleave', mouseLeave);
+container.addEventListener('mousedown', e => mouseIsDown(e))
+container.addEventListener('mouseup', e => mouseIsUp(e))
+container.addEventListener('mousemove', e => mouseMove(e))
+container.addEventListener('mouseleave', e => mouseLeave(e))
 container.addEventListener('wheel', e => handleScroll(e), { passive: false })
 container.addEventListener('dblclick', e => doubleClick(e))
 
 function doubleClick(e) {
     const rect = image.getBoundingClientRect();
     const scaleX = image.naturalWidth / rect.width;
-     const scaleY = image.naturalHeight / rect.height;
-     const x = (e.clientX - rect.left) * scaleX;
-     const y = (e.clientY - rect.top) * scaleY;
+    const scaleY = image.naturalHeight / rect.height;
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
 
     const txt = prompt("Enter Annotation: ")
 
@@ -67,6 +64,7 @@ function doubleClick(e) {
     container.appendChild(circle);
     container.appendChild(tooltip);
 
+
     circle.addEventListener('mouseover', function () {
         tooltip.style.visibility = 'visible';
     })
@@ -83,36 +81,36 @@ function doubleClick(e) {
         container.removeChild(tooltip);
     }
 
-    saveAnnotation(x, y, txt, imageNum);
+    saveAnnotation(x, y, txt, imageNum, siteName);
 }
 
 function handleScroll(e) {
     //disables scrolling up/down with mouse wheel, only click/drag will work
     let image = document.getElementById("scrollImg");
-     let scale = 1;
-     const scaleStep = 1;
-     const minScale = 1;
-     const maxScale = 10;
-     
-     if (e.target == image) { // disables scrolling rest of page while cursor on image
-         e.preventDefault(); //disables scrolling up/down with mouse wheel, only click/drag will work
- 
-         const rect = image.getBoundingClientRect();
-         const offsetX = e.clientX - rect.left;
-         const offsetY = e.clientY - rect.top;
- 
-         const originX = (offsetX / rect.width) * 100;
-         const originY = (offsetY / rect.height) * 100;
- 
-         if (e.deltaY < 0) {
-             scale = Math.min(maxScale, scale + scaleStep);
-         } else {
-             scale = Math.max(minScale, scale - scaleStep);
-         }
-     
-         image.style.transformOrigin = `${originX}% ${originY}%`;
-         image.style.transform = `scale(${scale})`;
-     }
+    let scale = 1;
+    const scaleStep = 1;
+    const minScale = 1;
+    const maxScale = 10;
+
+    if (e.target == image) { // disables scrolling rest of page while cursor on image
+        e.preventDefault(); //disables scrolling up/down with mouse wheel, only click/drag will work
+
+        const rect = image.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left;
+        const offsetY = e.clientY - rect.top;
+
+        const originX = (offsetX / rect.width) * 100;
+        const originY = (offsetY / rect.height) * 100;
+
+        if (e.deltaY < 0) {
+            scale = Math.min(maxScale, scale + scaleStep);
+        } else {
+            scale = Math.max(minScale, scale - scaleStep);
+        }
+
+        image.style.transformOrigin = `${originX}% ${originY}%`;
+        image.style.transform = `scale(${scale})`;
+    }
 }
 
 function mouseIsDown(e) {
@@ -152,7 +150,7 @@ function saveAnnotation(x, y, txt, imageNum) {
             'Content-Type': 'application/json',
             'X-CSRFToken': getCookie('csrftoken')
         },
-        body: JSON.stringify({ x, y, txt, imageNo: imageNum })
+        body: JSON.stringify({ x, y, txt, imageNo: imageNum, siteName: siteName })
     }).then(response => response.json())
         .then(data => console.log(data));
 }
@@ -182,8 +180,10 @@ function loadAnnotations(imageNumber) {
             data.forEach(annotation => {
                 console.log("ANNOTATION.IMAGENO: " + annotation.imageNo);
                 console.log("IMAGENUMBER: " + imageNumber);
-                
-                if (annotation.imageNo === imageNumber) {
+                console.log("ANNOTATION.SITENAME: " + annotation.siteName);
+                console.log("SITENAME: " + siteName);
+
+                if (annotation.imageNo === imageNumber && annotation.siteName === siteName) {
                     const circle = document.createElement('div');
                     circle.className = 'circle-marker';
                     circle.style.position = 'absolute';
@@ -230,7 +230,7 @@ function loadAnnotations(imageNumber) {
         })
 }
 
-function clearAnnotations(){
+function clearAnnotations() {
     const circles = container.querySelectorAll('.circle-marker');
     const tooltips = container.querySelectorAll('div[style*="color: white"]');
     circles.forEach(circle => {
