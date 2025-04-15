@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+ {% load static %}
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <link rel="stylesheet" href="{% static 'index.css' %}">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Videos</title>
+ </head>
+ <body>
+     <nav>
+         <a href="/berry/">🍓</a>
+         <a href="/users/register/">🔒</a>
+         <a href="/users/login/">🔓</a>
+         <a href="/users/profile/">👤</a>
+         <a href="">🏠</a>
+         <a href = "/videos/">📺</a>
+     </nav>
+ </body>
+ {% for video in videos %}
+     <h2> {{ video.title }} by {{ video.creator }}</h2>
+     <iframe width = '1280' height = '720' src = '{{ video.url }}'></iframe>
+     <h3>{{ video.description }}</h3>
+ {% endfor %}

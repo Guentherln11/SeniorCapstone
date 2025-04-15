@@ -25,4 +25,5 @@ urlpatterns = [
     path("berry/", include("berry.urls")),
     path('users/', include("users.urls")),
     path('admin/', admin.site.urls),
+    path('videos/', views.videos, name='videos'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
