@@ -5,10 +5,22 @@
     {{ page.title }}
 {% endblock %}
 {% block info %}
-    <div class="berryIntro">
-        {{ page.content|safe }}
-    </div>
+<div class="berryIntro">
+    {{ page.content|safe }}
+</div>
 {% endblock %}
+<div class="scrollable-container">
+{% block image %}
+{{ imageUrls|json_script:"image-urls" }}
+    
+<img src="{{ imageUrls.0 }}">
+<script>
+    const images = JSON.parse(document.getElementById('image-urls').textContent);
+    const siteName = "{{ page.title|escapejs }}"
+</script>
+
+{% endblock %}
+</div>
 
 {% block countyMap %}
 <script>

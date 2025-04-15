@@ -40,7 +40,13 @@ THE BERRY SITE
 
 <div class="scrollable-container">
     {% block image %}
-    <img src="/media/images/ScrollTest.jpg" id = "scrollImg"/>
+    {{ imageUrls|json_script:"image-urls" }}
+    <img src="{{ imageUrls.0 }}">
+
+    <script>
+        const images = JSON.parse(document.getElementById('image-urls').textContent);
+        const siteName = "The Berry Site"
+    </script>
     {% endblock %}
 </div>
 

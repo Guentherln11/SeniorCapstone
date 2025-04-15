@@ -6,10 +6,12 @@ class Annotations(models.Model):
     y = models.FloatField()
     text = models.CharField(max_length=255)
     imageNo = models.IntegerField()
+    siteName = models.CharField(max_length=255, default='The Berry Site')
 
 class bImages(models.Model):
     name = models.CharField(max_length=255)
     image = models.ImageField(upload_to='images/')
+    siteName = models.CharField(max_length=255, default='The Berry Site') 
 
 class Additional(models.Model):
     title = models.CharField(max_length=255)

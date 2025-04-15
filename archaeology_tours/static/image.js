@@ -1,5 +1,5 @@
 const container = document.querySelector('.scrollable-container');
-const image = container.querySelector('img');
+let image = container.querySelector('img');
 const zoomDiv = document.createElement('div');
 zoomDiv.className = "zoom-div";
 zoomDiv.style.position = 'relative';
@@ -8,6 +8,7 @@ zoomDiv.style.transformOrigin = '0 0';
 
 container.replaceChild(zoomDiv, image);
 zoomDiv.appendChild(image);
+image = zoomDiv.querySelector('img');
 let startX, startY, scrollLeft, scrollTop, isDown;
 let currentZoom = 1;
 
@@ -16,16 +17,12 @@ const prevButton = document.getElementById('prev-btn');
 
 let imageNum = 0;
 
-const images = [
-    '/media/images/ScrollTest.jpg',
-    '/media/images/20250325_101839.jpg',
-]
-
 nextButton.addEventListener('click', () => {
     imageNum = (imageNum + 1) % images.length;
     clearAnnotations();
     loadAnnotations(imageNum);
     image.src = images[imageNum];
+    image = zoomDiv.querySelector('img');
 })
 
 prevButton.addEventListener('click', () => {
@@ -33,6 +30,7 @@ prevButton.addEventListener('click', () => {
     clearAnnotations();
     loadAnnotations(imageNum);
     image.src = images[imageNum];
+    image = zoomDiv.querySelector('img');
 })
 
 container.addEventListener('mousedown', e => mouseIsDown(e));
@@ -109,7 +107,6 @@ function doubleClick(e) {
 function handleScroll(e) {
     if (e.target == image) { 
         e.preventDefault(); 
-        let image = document.getElementById("scrollImg");
         
         const scaleStep = 1;
         const minScale = 1;
@@ -137,7 +134,6 @@ function handleScroll(e) {
         zoomDiv.style.transform = `scale(${currentZoom})`;
 
         zoomDiv.style.transformOrigin = `${originX}% ${originY}%`;
-        zoomDiv.style.transform = `scale(${scale})`;
 
     }
 }
@@ -179,7 +175,7 @@ function saveAnnotation(x, y, txt, imageNum) {
             'Content-Type': 'application/json',
             'X-CSRFToken': getCookie('csrftoken')
         },
-        body: JSON.stringify({ x, y, txt, imageNo: imageNum })
+        body: JSON.stringify({ x, y, txt, imageNo: imageNum, siteName: siteName })
     }).then(response => response.json())
         .then(data => console.log(data));
 }
@@ -210,7 +206,7 @@ function loadAnnotations(imageNumber) {
                 console.log("ANNOTATION.IMAGENO: " + annotation.imageNo);
                 console.log("IMAGENUMBER: " + imageNumber);
 
-                if (annotation.imageNo === imageNumber) {
+                if (annotation.imageNo === imageNumber && annotation.siteName === siteName) {
                     const circle = document.createElement('div');
                     circle.className = 'circle-marker';
                     circle.style.position = 'absolute';
@@ -258,11 +254,13 @@ function loadAnnotations(imageNumber) {
 }
 
 function clearAnnotations() {
+    const circles = container.querySelectorAll('.circle-marker');
+    const tooltips = container.querySelectorAll('div[style*="color: white"]');
     circles.forEach(circle => {
-        container.removeChild(circle);
+        zoomDiv.removeChild(circle);
     })
     tooltips.forEach(tooltip => {
-        container.removeChild(tooltip);
+        zoomDiv.removeChild(tooltip);
     })
 }
 
