@@ -30,3 +30,14 @@
 <script src="{% static 'map.js' %}"></script>
 <!-- <p>County: {{ page.county }}</p> -->
 {% endblock %}
+
+{% block quizQs %}
+{% for question in questions %}
+<div class="quizInner">
+ <h2>{{ question.question }}</h2>
+ {% for answer in question.answers.all %}
+    <button class="{% if answer.is_correct %}correct{% else %}incorrect{% endif %}">{{ answer.answer_text }}</button><br>
+ {% endfor %}
+</div>
+{% endfor %}
+{% endblock %}
