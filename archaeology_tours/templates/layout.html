@@ -28,13 +28,16 @@
     </nav>
     <section>
         <article>
-
             <h2 class="berryT">
                 {% block infoTitle %}
+                    {% block artifact %}
 
+                    {% endblock %}
+                    {% block artifactImg %}
+
+                    {% endblock %}
                 {% endblock %}
             </h2>
-
 
             <div class=berryIntro>
                 {% block info %}
@@ -85,13 +88,10 @@
 </script>
 <section>
     <article class="artif">
-        <h2 class="berryT">ARTIFACTS</h2>
-        {% block artifactInfo %}
+        <h2 class="berryT"></h2>
+        {% block infoArtifact %}{% endblock %}
 
-        {% endblock %}
-        {% block artifactPic %}
-
-        {% endblock %}
+        {% block artifactPic %}{% endblock %}
     </article>
 </section>
 </body>
