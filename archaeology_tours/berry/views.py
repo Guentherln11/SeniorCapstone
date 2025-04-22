@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
-from .models import Annotations, Additional, bImages
+from .models import Annotations, Additional, bImages, Question
 from django.template import loader
 import json
 
@@ -10,7 +10,8 @@ def index(request):
    pages = Additional.objects.all()
    images = bImages.objects.filter(siteName="The Berry Site")
    imageUrls = [image.image.url for image in images]
-   context = {"pages": pages, "images": images, "imageUrls": imageUrls}
+   questions = Question.objects.filter(siteName="The Berry Site").prefetch_related('answers')
+   context = {"pages": pages, "images": images, "imageUrls": imageUrls, "questions": questions}
    return HttpResponse(template.render(context, request)) 
 
 
@@ -32,4 +33,5 @@ def get_page(request, slug):
     county = page.county if page.county else "Burke"
     images = bImages.objects.filter(siteName=page.title)
     imageUrls = [image.image.url for image in images]
-    return render(request, "additionalPage.html", {'page': page, 'pages': pages, "county": county, "images": images, "imageUrls": imageUrls}) 
+    questions = Question.objects.filter(siteName=page.title).prefetch_related('answers')
+    return render(request, "additionalPage.html", {'page': page, 'pages': pages, "county": county, "images": images, "imageUrls": imageUrls, "questions": questions}) 
