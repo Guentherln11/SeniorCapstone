@@ -232,20 +232,66 @@ function loadAnnotations(imageNumber) {
                     zoomDiv.appendChild(circle);
                     zoomDiv.appendChild(tooltip);
 
+                    let popupImg = null;
+                    let popup = null;
+
+                    if (annotation.popupImage) {
+                        popupImg = document.createElement('img');
+                        popupImg.src = annotation.popupImage;
+                        popupImg.className = 'popupImage';
+                        popupImg.style.position = "absolute";
+                        popupImg.style.width = "200px";
+                        popupImg.style.left = `${annotation.x + 20}px`;
+                        popupImg.style.top = `${annotation.y}px`;   
+                        popupImg.style.display = 'none';
+                        popupImg.style.border = '2px solid white';
+                        popupImg.style.backgroundColor = '#000';
+                        popupImg.style.zIndex = 10;
+                        zoomDiv.appendChild(popupImg);
+
+
+                    }
+
+                    if (annotation.popupText) {
+                        popup = document.createElement('div');
+                        popup.textContent = annotation.popupText;
+                        popup.style.position = 'absolute';
+                        popup.style.left = `${annotation.x + 20}px`;
+                        popup.style.top = `${annotation.y + 30}px`;
+                        popup.style.backgroundColor = '#222';
+                        popup.style.color = 'white';
+                        popup.style.padding = '6px 8px';
+                        popup.style.borderRadius = '6px';
+                        popup.style.boxShadow = '0 2px 6px rgba(0,0,0,0.4)';
+                        popup.style.display = 'none';
+                        popup.style.zIndex = 10;
+                        popup.style.maxWidth = "200px";
+                        zoomDiv.appendChild(popup);
+                    
+                    }
+
                     circle.addEventListener('mouseover', function () {
                         tooltip.style.visibility = 'visible';
+                        if (popupImg)
+                            popupImg.style.display = "block";
+                        if (popup)
+                            popup.style.display = "block";
                     })
 
                     circle.addEventListener('mouseout', function () {
                         tooltip.style.visibility = 'hidden';
+                        if (popupImg)
+                            popupImg.style.display = "none";
+                        if (popup)
+                            popup.style.display = "none";
                     })
 
                     circle.addEventListener('contextmenu', e => removeAnno(e));
 
                     function removeAnno(e) {
                         e.preventDefault();
-                        container.removeChild(circle);
-                        container.removeChild(tooltip);
+                        zoomDiv.removeChild(circle);
+                        zoomDiv.removeChild(tooltip);
                     }
                 }
             }

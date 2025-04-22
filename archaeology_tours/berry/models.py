@@ -7,6 +7,8 @@ class Annotations(models.Model):
     text = models.CharField(max_length=255)
     imageNo = models.IntegerField()
     siteName = models.CharField(max_length=255, default='The Berry Site')
+    popupImage = models.ImageField(upload_to='annotation_images/', blank=True, null=True)
+    popupText = models.TextField(blank=True, null=True)
 
 class bImages(models.Model):
     name = models.CharField(max_length=255)

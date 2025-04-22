@@ -15,8 +15,21 @@ def index(request):
 
 
 def get_annotations(request):
-   annotations = Annotations.objects.all().values('x', 'y', 'text', 'imageNo', 'siteName')
-   return JsonResponse(list(annotations), safe=False)
+    annotations = Annotations.objects.all()
+    response_data = []
+    for ann in annotations:
+        popup_url = ann.popupImage.url if ann.popupImage else None
+        popup_text = ann.popupText if ann.popupText else None
+        response_data.append({
+            'x': ann.x,
+            'y': ann.y,
+            'text': ann.text,
+            'imageNo': ann.imageNo,
+            'siteName': ann.siteName,
+            'popupImage': popup_url,
+            'popupText': popup_text,
+        })
+    return JsonResponse(response_data, safe=False)
 
 def save_annotation(request):
    if request.method == 'POST':
