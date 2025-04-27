@@ -26,6 +26,8 @@ def login_p(request):
         form = AuthenticationForm()
     return render(request, "users/login.html", { "form": form })
 
+@login_required
 def profile(request):
-    collected_stamps = UserStamp.objects.filter(profile=request.user.profile).select_related('stamp')
+    profile = Profile.objects.get(user=request.user)
+    collected_stamps = UserStamp.objects.filter(profile=profile).select_related('stamp')
     return render(request, "users/profile.html", {'collected_stamps': collected_stamps})

@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from .models import Annotations, Additional, bImages, Question, Stamp
-from users.models import UserStamp
+from users.models import UserStamp, Profile
 from django.template import loader
 from django.contrib.auth.decorators import login_required
 import json
@@ -70,9 +70,12 @@ def collect_stamp(request):
         data = json.loads(request.body)
         stamp_id = data.get('stamp_id')
         try:
+            profile = Profile.objects.get(user=request.user)
             stamp = Stamp.objects.get(id=stamp_id)
-            UserStamp.objects.get_or_create(user=request.user, stamp=stamp)
+            UserStamp.objects.get_or_create(profile=profile, stamp=stamp)
             return JsonResponse({'status': 'collected'})
         except Stamp.DoesNotExist:
             return JsonResponse({'status': 'not found'}, status=404)
-        return JsonResponse({'status': 'failed'}, status=404)
+        except profile.DoesNotExist:
+            return JsonResponse({'status': 'profile does not exist'}, status=404);
+    return JsonResponse({'status': 'failed'}, status=404)
