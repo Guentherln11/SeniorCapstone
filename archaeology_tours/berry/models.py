@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class Annotations(models.Model):
     x = models.FloatField()
@@ -36,3 +37,14 @@ class Answer(models.Model):
 
     def __str__(self):
         return self.answer_text
+
+class Stamp(models.Model):
+    x = models.FloatField()
+    y = models.FloatField()
+    imageNo = models.IntegerField()
+    siteName = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='stamps/')
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.name} ({self.siteName})"

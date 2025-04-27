@@ -19,7 +19,9 @@ let imageNum = 0;
 
 nextButton.addEventListener('click', () => {
     imageNum = (imageNum + 1) % images.length;
+    clearStamps();
     clearAnnotations();
+    loadStamps(imageNum);
     loadAnnotations(imageNum);
     image.src = images[imageNum];
     image = zoomDiv.querySelector('img');
@@ -28,6 +30,8 @@ nextButton.addEventListener('click', () => {
 prevButton.addEventListener('click', () => {
     imageNum = (imageNum - 1 + images.length) % images.length;
     clearAnnotations();
+    clearStamps();
+    loadStamps(imageNum);
     loadAnnotations(imageNum);
     image.src = images[imageNum];
     image = zoomDiv.querySelector('img');
@@ -309,4 +313,50 @@ function clearAnnotations() {
     })
 }
 
-document.addEventListener('DOMContentLoaded', loadAnnotations(imageNum));
+function loadStamps(imageNumber)
+{
+   fetch(`/berry/stamps/?site=${encodeURIComponent(siteName)}&imageNo=${imageNumber}`)
+	.then(response => response.json())
+	.then(stamps => {
+           stamps.forEach(stamp => {
+              const stampImg = document.createElement('img');
+		   stampImg.src = stamp.image;
+		   stampImg.className = 'stamp-marker';
+		   stampImg.style.position = 'absolute';
+		   stampImg.style.left = `${stamp.x - 15}px`;
+		   stampImg.style.top = `${stamp.y - 15}px`;
+		   stampImg.style.width= '30px';
+		   stampImg.style.height = '30px';
+		   stampImg.style.cursor = 'pointer';
+		   stampImg.addEventListener('click', function() {
+                       fetch('/berry/collect_stamp/', {
+                          method: 'POST',
+			  headers: {
+				  'Content-Type' : 'application/json',
+                                  'X-CSRFToken': getCookie('csrftoken')
+		       },
+			 body: JSON.stringify({ stamp_id: stamp.id })
+		   }).then(res => res.json())
+	             .then(data => {
+		         if(data.status === 'collected') {
+                            stampImg.style.opacity = 0.5;
+				 alert('StampCollected!');
+			 }
+			 });
+		     });
+		   zoomDiv.appendChild(stampImg);
+	   });
+	});
+}
+
+function clearStamps()
+{
+   const stamps = zoomDiv.querySelectorAll('.stamp-marker');
+   stamps.forEach(stamp => zoomDiv.removeChild(stamp));
+}
+
+
+document.addEventListener('DOMContentLoaded', function(){
+	loadAnnotations(imageNum);
+	loadStamps(imageNum);
+});

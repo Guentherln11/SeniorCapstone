@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from .models import Profile, UserStamp
 
 # Create your views here.
 def register(request):
@@ -26,4 +27,5 @@ def login_p(request):
     return render(request, "users/login.html", { "form": form })
 
 def profile(request):
-    return render(request, "users/profile.html")
+    collected_stamps = UserStamp.objects.filter(profile=request.user.profile).select_related('stamp')
+    return render(request, "users/profile.html", {'collected_stamps': collected_stamps})

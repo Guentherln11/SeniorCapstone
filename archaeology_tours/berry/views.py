@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
-from .models import Annotations, Additional, bImages, Question
+from .models import Annotations, Additional, bImages, Question, Stamp
+from users.models import UserStamp
 from django.template import loader
+from django.contrib.auth.decorators import login_required
 import json
 
 # Create your views here.
@@ -47,4 +49,30 @@ def get_page(request, slug):
     images = bImages.objects.filter(siteName=page.title)
     imageUrls = [image.image.url for image in images]
     questions = Question.objects.filter(siteName=page.title).prefetch_related('answers')
-    return render(request, "additionalPage.html", {'page': page, 'pages': pages, "county": county, "images": images, "imageUrls": imageUrls, "questions": questions}) 
+    return render(request, "additionalPage.html", {'page': page, 'pages': pages, "county": county, "images": images, "imageUrls": imageUrls, "questions": questions})
+
+def get_stamps(request):
+    site = request.GET.get('site')
+    image_no = request.GET.get('imageNo')
+    stamps = Stamp.objects.filter(siteName=site, imageNo=image_no)
+    data = [{
+        'id': stamp.id,
+        'x': stamp.x,
+        'y': stamp.y,
+        'image': stamp.image.url,
+        'name': stamp.name
+        } for stamp in stamps]
+    return JsonResponse(data, safe=False)
+
+@login_required
+def collect_stamp(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        stamp_id = data.get('stamp_id')
+        try:
+            stamp = Stamp.objects.get(id=stamp_id)
+            UserStamp.objects.get_or_create(user=request.user, stamp=stamp)
+            return JsonResponse({'status': 'collected'})
+        except Stamp.DoesNotExist:
+            return JsonResponse({'status': 'not found'}, status=404)
+        return JsonResponse({'status': 'failed'}, status=404)
