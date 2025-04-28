@@ -326,3 +326,8 @@ h3 {
 .prev-btn{
     background-color: red;
 }
+
+
+.form-with-validation {
+    margin: 10px;
+}
