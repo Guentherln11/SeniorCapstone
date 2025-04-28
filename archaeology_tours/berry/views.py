@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from .models import Annotations, Additional, bImages, Question, Artifact
 from django.template import loader
+from django.contrib.auth.decorators import login_required
+
 import json
 
 # Create your views here.
@@ -37,7 +39,9 @@ def get_annotations(request):
 def save_annotation(request):
    if request.method == 'POST':
       data = json.loads(request.body)
-      annotation = Annotations(x=data['x'], y=data['y'], text=data['txt'], imageNo=data['imageNo'], siteName=data['siteName'])
+      annotation = Annotations(x=data['x'], y=data['y'],
+             text=data['txt'], imageNo=data['imageNo'],
+             siteName=data['siteName'], user=request.user)
       annotation.save()
       return JsonResponse({'status': 'success'})
    return JsonResponse({'status': 'failed'}, status=400)

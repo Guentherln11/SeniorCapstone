@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Annotations(models.Model):
@@ -9,6 +10,12 @@ class Annotations(models.Model):
     siteName = models.CharField(max_length=255, default='The Berry Site')
     popupImage = models.ImageField(upload_to='annotation_images/', blank=True, null=True)
     popupText = models.TextField(blank=True, null=True)
+    # will delete annotations if user is deleted
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+
+    #users
+    def __str__(self):
+        return f"{self.text} by {self.user.username if self.user else 'Anonymous User'}"
 
 class bImages(models.Model):
     name = models.CharField(max_length=255)
