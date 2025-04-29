@@ -75,4 +75,4 @@ def collect_stamp(request):
             return JsonResponse({'status': 'collected'})
         except Stamp.DoesNotExist:
             return JsonResponse({'status': 'not found'}, status=404)
-        return JsonResponse({'status': 'failed'}, status=404)
+    return JsonResponse({'status': 'failed'}, status=404)

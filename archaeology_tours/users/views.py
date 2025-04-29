@@ -27,5 +27,5 @@ def login_p(request):
     return render(request, "users/login.html", { "form": form })
 
 def profile(request):
-    collected_stamps = UserStamp.objects.filter(profile=request.user.profile).select_related('stamp')
+    collected_stamps = UserStamp.objects.filter(profile=request.user).select_related('stamp')
     return render(request, "users/profile.html", {'collected_stamps': collected_stamps})
