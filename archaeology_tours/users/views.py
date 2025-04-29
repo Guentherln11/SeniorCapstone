@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from .models import Profile, UserStamp
+from berry.models import Annotations
 
 # Create your views here.
 def register(request):
@@ -30,4 +31,5 @@ def login_p(request):
 def profile(request):
     profile = Profile.objects.get(user=request.user)
     collected_stamps = UserStamp.objects.filter(profile=profile).select_related('stamp')
-    return render(request, "users/profile.html", {'collected_stamps': collected_stamps})
+    user_annotations = Annotations.objects.filter(user=request.user)
+    return render(request, "users/profile.html", {'collected_stamps': collected_stamps, 'user_annotations': user_annotations})

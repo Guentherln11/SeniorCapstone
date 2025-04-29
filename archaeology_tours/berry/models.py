@@ -29,7 +29,8 @@ class Additional(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     county = models.CharField(max_length = 255, blank=True)
-    
+    image = models.ImageField(upload_to='images/', blank=True, null=True)
+
 class Question(models.Model):
     question = models.CharField(max_length=255)
     siteName = models.CharField(max_length=255)
@@ -55,3 +56,12 @@ class Stamp(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.siteName})"
+
+class Artifact(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    image = models.ImageField(upload_to="artifacts/")
+    siteName=models.CharField(max_length=255, default='The Berry Site')
+    
+    def __str__(self):
+        return self.title

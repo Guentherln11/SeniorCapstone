@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
-from .models import Annotations, Additional, bImages, Question, Stamp
+from .models import Annotations, Additional, bImages, Question, Stamp, Artifact
 from users.models import UserStamp, Profile
 from django.template import loader
 from django.contrib.auth.decorators import login_required
@@ -13,6 +13,7 @@ def index(request):
    images = bImages.objects.filter(siteName="The Berry Site")
    imageUrls = [image.image.url for image in images]
    questions = Question.objects.filter(siteName="The Berry Site").prefetch_related('answers')
+   artifacts = Artifact.objects.filter(siteName="The Berry Site")
    context = {"pages": pages, "images": images, "imageUrls": imageUrls, "questions": questions}
    return HttpResponse(template.render(context, request)) 
 
@@ -49,9 +50,10 @@ def get_page(request, slug):
     pages = Additional.objects.all()
     county = page.county if page.county else "Burke"
     images = bImages.objects.filter(siteName=page.title)
-    imageUrls = [image.image.url for image in images]
+    imageUrls = [image.image.url for image in images.all()]
     questions = Question.objects.filter(siteName=page.title).prefetch_related('answers')
-    return render(request, "additionalPage.html", {'page': page, 'pages': pages, "county": county, "images": images, "imageUrls": imageUrls, "questions": questions})
+    artifacts = Artifact.objects.filter(siteName=page.title)
+    return render(request, "additionalPage.html", {'page': page, 'pages': pages, "county": county, "images": images, "imageUrls": imageUrls, "questions": questions, "artifacts": artifacts})
 
 def get_stamps(request):
     site = request.GET.get('site')
@@ -81,3 +83,5 @@ def collect_stamp(request):
         except profile.DoesNotExist:
             return JsonResponse({'status': 'profile does not exist'}, status=404);
     return JsonResponse({'status': 'failed'}, status=404)
+
+

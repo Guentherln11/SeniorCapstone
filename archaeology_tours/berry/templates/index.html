@@ -62,10 +62,21 @@ THE BERRY SITE
 {% endfor %}
 {% endblock %}
 
-{% block artifactInfo %}
-<p>Text here</p>
+{% block infoArtifact %}
+    {% for artifact in artifacts %}
+    <div class="artifact" style="display: flex; align-items: flex-start; margin: 10px">
+        <div class="artifact-text" style="flex: 1; padding-right: 20px;">
+        <h2>{{ artifact.title }}</h3>
+        <p>{{ artifact.description }}</p>
+        <img src="{{ artifact.image.url }}" alt="{{ artifact.title }}" width="500px" style="clear: right">
+    </div>
+    {% endfor %}
 {% endblock %}
 
-{% block artifactPic %}
-<img src="/media/images/FSJ-Historic-Artifacts.jpg"  height="500px" width="500px">
+{% block artifactImg %}
+        {% for artifact in artifacts %}
+        <div class="artifactImg">
+            <img src="{{ artifact.image.url }}" alt="{{ artifact.title }}" style="max-width: 300px;">
+        </div>
+        {% endfor %}
 {% endblock %}

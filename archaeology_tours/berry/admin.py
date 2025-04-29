@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Annotations, bImages, Additional, Question, Answer, Stamp
+from .models import Annotations, bImages, Additional, Question, Answer, Stamp, Artifact
 from mysite.models import Videos
 from users.models import UserStamp
 # Register your models here.
@@ -7,6 +7,7 @@ admin.site.register(Annotations)
 admin.site.register(bImages)
 admin.site.register(Additional)
 admin.site.register(Videos)
+admin.site.register(Artifact)
 class AnswerInline(admin.TabularInline):
     model = Answer
     extra = 4

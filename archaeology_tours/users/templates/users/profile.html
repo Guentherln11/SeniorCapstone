@@ -30,5 +30,14 @@
       <img src="{{ userstamp.stamp.image.url }}" width="60">
      {% endfor %}
     </div>
+    <div>
+     <h2> Annotations made by {{ user.username }}</h2>
+     {% for annotation in user_annotations %}
+     <li>Annotation text: {{ annotation.text }}<li></br>
+     <li>Annotation site: {{ annotation.siteName }}</li> </br>
+     {% empty %}
+     <li> No annotations </li>
+     {% endfor %}
+    </div>
 </body>
 </html>
