@@ -14,7 +14,7 @@ def index(request):
    imageUrls = [image.image.url for image in images]
    questions = Question.objects.filter(siteName="The Berry Site").prefetch_related('answers')
    artifacts = Artifact.objects.filter(siteName="The Berry Site")
-   context = {"pages": pages, "images": images, "imageUrls": imageUrls, "questions": questions}
+   context = {"pages": pages, "images": images, "imageUrls": imageUrls, "questions": questions, "artifacts": artifacts}
    return HttpResponse(template.render(context, request)) 
 
 
