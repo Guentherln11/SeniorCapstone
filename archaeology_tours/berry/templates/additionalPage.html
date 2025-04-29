@@ -49,13 +49,14 @@
         <img src="{{ artifact.image.url }}" alt="{{ artifact.title }}" width="500px">
     </div>
     {% endfor %}
-    {% endblock %}
+{% endblock %}
 
-    {% block artifactImg %}
-        {% for artifact in artifacts %}
-        <div class="artifactImg">
-            <img src="{{ artifact.image.url }}" alt="{{ artifact.title }}">
-        </div>
-    {% endfor %}
+{% block artifactPic %}
+    {% for artifact in artifacts %}
+    <div class="artifactImg">
+        <img src="{{ artifact.image.url }}" alt="{{ artifact.title }}">
+    </div>
+{% endfor %}
 
-    {% endblock %}
+{% endblock %}
+
