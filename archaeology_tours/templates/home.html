@@ -18,7 +18,6 @@
             <li><a href="/users/register/">Register</a></li>
             <li><a href="/users/login/">Login</a></li>
             <li><a href="/users/profile/">Profile</a></li>
-            <li><a href="">Home</a></li>
             {% for page in pages %}
             <li><a href="{% url 'berry:get_page' slug=page.slug %}">{{ page.title }}</a></li>
             {% endfor %}
